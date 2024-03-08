@@ -1,26 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { Error404PageComponentComponent } from './shared/error404-page-component/error404-page-component.component';
+import { LayoutComponent } from './songs/components/layout/layout.component';
 
 const routes: Routes = [
   {
-    path: 'songs',
-    loadChildren: () =>
-      import('./songs/songs.module').then((m) => m.SongsModule),
+    path: '',
+    loadChildren: () => import('./songs/songs.module').then(m => m.SongsModule)
   },
   {
     path: '404',
-    component: Error404PageComponentComponent,
-  },
-  {
-    path: '',
-    redirectTo: 'songs',
-    pathMatch: 'full',
+    component: Error404PageComponentComponent
   },
   {
     path: '**',
-    redirectTo: '404',
-  },
+    redirectTo: '404'
+  }
 ];
 
 @NgModule({

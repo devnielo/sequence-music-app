@@ -1,0 +1,19 @@
+<mat-drawer-container class="flex h-screen">
+  <mat-drawer #drawer class="w-64 bg-gray-800 text-white" mode="side" opened="true">
+    <p class="p-4">Auto-resizing sidenav</p>
+    <div *ngIf="showFiller" class="p-4">
+      <p>Lorem, ipsum dolor sit amet consectetur.</p>
+    </div>
+    <button (click)="showFiller = !showFiller" mat-raised-button class="m-4">
+      Toggle extra text
+    </button>
+  </mat-drawer>
+
+  <div class="flex-1 p-4">
+    <button type="button" mat-icon-button (click)="drawer.toggle()" class="md:hidden">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <p>Main content here</p>
+  </div>
+</mat-drawer-container>
+<h2>hola</h2>
