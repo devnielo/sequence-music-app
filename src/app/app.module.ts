@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { LayoutComponent } from './songs/components/layout/layout.component';
 import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -15,9 +16,10 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SharedModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([]), // Asegúrate de que esto esté aquí, incluso si está vacío
+    EffectsModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent],

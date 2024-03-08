@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,5 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
+  @ViewChild('drawer') drawer!: MatDrawer;
   showFiller = false;
+
+  toggleDrawer() {
+    if (this.drawer) {
+      this.drawer.toggle();
+    }
+  }
 }
