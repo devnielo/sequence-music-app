@@ -1,19 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'shared-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
-  @ViewChild('drawer') drawer!: MatDrawer;
-  showFiller = false;
+  @Output() close = new EventEmitter<void>();
 
-  toggleDrawer() {
-    if (this.drawer) {
-      this.drawer.toggle();
-    }
+  closeSidebar() {
+    this.close.emit();
   }
 }

@@ -1,47 +1,43 @@
-<mat-drawer-container class="flex h-screen bg-black">
-  <mat-drawer
-    #drawer
-    class="w-64 bg-black text-white"
-    mode="side"
-    opened="true"
-  >
-    <!-- Encabezado del Sidebar -->
-    <div class="bg-black p-4 flex justify-between items-center">
-      <!-- Título -->
-      <span class="font-bold text-lg">Sequence Music</span>
-    </div>
-
-    <!-- Lista de Navegación -->
-    <nav class="mt-2">
-      <a
-        routerLink="/browse"
-        class="flex items-center px-4 py-2 hover:bg-gray-900"
-      >
-        Canciones
-        <mat-icon class="text-green-600 mr-2">arrow_forward_ios</mat-icon>
-      </a>
-      <a
-        routerLink="/search"
-        class="flex items-center px-4 py-2 hover:bg-gray-900"
-      >
-        Artistas
-        <mat-icon class="text-green-600 mr-2">arrow_forward_ios</mat-icon>
-      </a>
-      <a
-        routerLink="/library"
-        class="flex items-center px-4 py-2 hover:bg-gray-900"
-      >
-        Compañías discográficas
-        <mat-icon class="text-green-600 mr-2">arrow_forward_ios</mat-icon>
-      </a>
-      <!-- ... más elementos ... -->
-    </nav>
-  </mat-drawer>
-
-  <div class="flex-1 p-4 text-white ml-2">
-    <button type="button" mat-icon-button (click)="drawer.toggle()">
-      <mat-icon *ngIf="!drawer.opened">menu</mat-icon>
-      <mat-icon *ngIf="drawer.opened">close</mat-icon>
+<div class="flex flex-col h-full bg-background w-80 pr-2 pl-2 shadow-creative">
+  <!-- Título y botón de cerrar -->
+  <div class="flex items-center justify-between p-4 border-b border-primary bg-gradient-to-r from-secondary to-accent">
+    <h3 class="text-headline text-white font-bold">Sequence</h3>
+    <button class="text-white" (click)="closeSidebar()">
+      <!-- SVG o ícono para cerrar -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
     </button>
   </div>
-</mat-drawer-container>
+
+  <!-- Navegación -->
+  <nav class="flex-grow mt-2">
+    <ul class="space-y-2">
+      <!-- Links de navegación -->
+      <li>
+        <a routerLink="/songs" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+          Canciones
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/artists" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+          Artistas
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/companies" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+          Compañías
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

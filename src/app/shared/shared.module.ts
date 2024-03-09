@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Error404PageComponentComponent } from './error404-page-component/error404-page-component.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { MaterialModule } from '../material/material/material.module';
-
-
+import { Error404Page } from './error404-page/error404-page.component';
+import { LayoutPageComponent } from './layout-page/layout-page.component';
+import { RouterModule } from '@angular/router';
+import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
-    Error404PageComponentComponent,
-    SidebarComponent
+    Error404Page,
+    SidebarComponent,
+    LayoutPageComponent,
+    FloatingButtonComponent,
+    SafeHtmlPipe,
   ],
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  exports: [
-    SidebarComponent
-  ]
+  imports: [CommonModule, RouterModule],
+  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DetailPageComponent } from './pages/detail-page/detail-page.component';
 import { FormPageComponent } from './pages/form-page/form-page.component';
 import { LayoutPageComponent } from '../shared/layout-page/layout-page.component';
-import { ListPageComponent } from './pages/list-page/list-page.component';
 
 const routes: Routes = [
   {
@@ -12,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ListPageComponent,
+        component: DetailPageComponent,
       },
       {
         path: 'add',
@@ -34,4 +33,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SongsRoutingModule {}
+export class ArtistsRoutingModule {}
