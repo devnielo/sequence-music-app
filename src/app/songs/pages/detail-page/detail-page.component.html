@@ -1,1 +1,58 @@
-<p>song-detail works!</p>
+<shared-loader *ngIf="loading$ | async"></shared-loader>
+
+<div class="min-h-screen p-5">
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-headline text-dark font-light">Detalles de la Canción</h3>
+    <button
+      class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
+      (click)="navigateBack()"
+    >
+      Volver
+    </button>
+  </div>
+
+  <ng-container *ngIf="song$ | async as song">
+    <!-- Detalle de la canción -->
+    <div class="flex flex-col md:flex-row">
+      <!-- Imagen de la canción -->
+      <div class="md:w-1/2 mb-4 md:mb-0">
+        <img
+          [src]="song.poster"
+          alt="{{ song.title }}"
+          class="w-full h-auto rounded-lg shadow-md"
+        />
+      </div>
+
+      <!-- Información de la canción -->
+      <div class="md:w-1/2 md:pl-6">
+        <h3 class="text-headline text-dark font-bold mb-4">{{ song.title }}</h3>
+        <div class="text-secondary mb-4">
+          <span *ngFor="let genre of song.genres; let i = index">
+            #{{ genre }}<span *ngIf="i < song.genres.length - 1">, </span>
+          </span>
+        </div>
+        <div class="text-info mb-2">Año: {{ song.year }}</div>
+        <div class="text-info mb-2">Duración: {{ song.duration }}s</div>
+        <div class="text-success mb-4">Rating: {{ song.rating }}</div>
+
+        <!-- Botones de acción -->
+        <div class="flex gap-4">
+          <button
+            class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
+            (click)="navigateToEdit(song.id)"
+          >
+            Editar
+          </button>
+          <button
+  class="bg-danger text-white py-2 px-4 rounded hover:bg-danger-dark transition duration-300"
+  (click)="deleteSongConfirm(song.id)"
+>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<shared-modal></shared-modal>

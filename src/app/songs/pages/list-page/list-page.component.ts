@@ -11,7 +11,7 @@ import {
 import { SongState } from '../../store/reducers/song.reducer';
 
 @Component({
-  selector: 'app-list-page',
+  selector: 'song-list-page',
   templateUrl: './list-page.component.html',
   styleUrls: ['./list-page.component.css'],
 })

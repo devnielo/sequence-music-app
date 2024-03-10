@@ -1,17 +1,17 @@
-// src/app/songs/store/reducers/song.reducer.ts
-
 import { createReducer, on } from '@ngrx/store';
 import * as SongActions from '../actions/song.actions';
 import { Song } from '../../interfaces/song.interface';
 
 export interface SongState {
   songs: Song[];
+  currentSong: Song | null;
   loading: boolean;
   error: any;
 }
 
 export const initialState: SongState = {
   songs: [],
+  currentSong: null,
   loading: false,
   error: null
 };
@@ -33,5 +33,37 @@ export const songReducer = createReducer(
     ...state,
     loading: false,
     error: error
-  }))
+  })),
+  on(SongActions.loadSong, state => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(SongActions.loadSongSuccess, (state, { song }) => ({
+    ...state,
+    currentSong: song,
+    loading: false,
+    error: null
+  })),
+  on(SongActions.loadSongFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error: error
+  })),
+  on(SongActions.addSong, state => ({
+    ...state,
+    loading: true
+  })),
+  on(SongActions.addSongSuccess, (state, { song }) => ({
+    ...state,
+    songs: [...state.songs, song],
+    loading: false
+  })),
+  on(SongActions.addSongFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error: error
+  })),
+  // Aquí agregarías los reducers para actualizar y eliminar canciones
+  // Asegúrate de manejar también sus respectivas acciones de éxito y error
 );

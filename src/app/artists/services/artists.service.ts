@@ -1,18 +1,37 @@
-// artist.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Artist } from '../interfaces/artist.interface';
+import { ApiService } from '../../core/services/api.service';
+import { ApiResponse } from 'src/app/core/models/api-response.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class ArtistService {
-  private baseUrl = 'http://localhost:3000/artists';
+  constructor(private apiService: ApiService) {}
 
-  constructor(private http: HttpClient) {}
+  // Método para obtener todos los artistas
+  getAllArtists(): Observable<ApiResponse<Artist[]>> {
+    return this.apiService.get<Artist[]>('artists');
+  }
 
-  getArtists(): Observable<Artist[]> {
-    console.log(this.http.get<Artist[]>(this.baseUrl));
+  // Método para obtener un artista específico por su ID
+  getArtistById(id: number): Observable<ApiResponse<Artist>> {
+    return this.apiService.get<Artist>(`artists/${id}`);
+  }
 
-    return this.http.get<Artist[]>(this.baseUrl);
+  // Método para añadir un nuevo artista
+  addArtist(artist: Artist): Observable<ApiResponse<Artist>> {
+    return this.apiService.post<Artist>('artists', artist);
+  }
+
+  // Método para actualizar un artista existente
+  updateArtist(artist: Artist): Observable<ApiResponse<Artist>> {
+    return this.apiService.put<Artist>(`artists/${artist.id}`, artist);
+  }
+
+  // Método para eliminar un artista
+  deleteArtist(id: number): Observable<{}> {
+    return this.apiService.delete<{}>(`artists/${id}`);
   }
 }

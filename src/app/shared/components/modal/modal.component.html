@@ -1,0 +1,10 @@
+<div *ngIf="showModal$ | async" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-4 rounded-lg shadow-lg">
+    <h3 class="text-lg font-bold mb-2" *ngIf="modalTitle$ | async as title">{{ title }}</h3>
+    <p *ngIf="modalMessage$ | async as message">{{ message }}</p>
+    <div class="flex justify-end gap-2 mt-4">
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="close()">Cancelar</button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="continue()">Continuar</button>
+    </div>
+  </div>
+</div>

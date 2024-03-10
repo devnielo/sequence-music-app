@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { LoaderComponent } from './components/loader/loader.component';
     FloatingButtonComponent,
     SafeHtmlPipe,
     LoaderComponent,
+    ModalComponent,
   ],
   imports: [CommonModule, RouterModule],
-  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe, LoaderComponent],
+  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe, LoaderComponent, ModalComponent],
 })
 export class SharedModule {}

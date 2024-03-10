@@ -13,20 +13,21 @@ import { FormPageComponent } from './pages/form-page/form-page.component';
 import { SharedModule } from '../shared/shared.module';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    ListPageComponent,
-    DetailPageComponent,
-    FormPageComponent,
-  ],
+  declarations: [ListPageComponent, DetailPageComponent, FormPageComponent],
   imports: [
     CommonModule,
     SongsRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    TranslateModule,
     StoreModule.forFeature('songs', songReducer),
     EffectsModule.forFeature([SongEffects]),
+  ],
+  exports: [
+    DetailPageComponent,
   ],
 })
 export class SongsModule {}

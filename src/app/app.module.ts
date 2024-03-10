@@ -13,6 +13,7 @@ import { CompaniesModule } from './companies/companies.module';
 import { SongsModule } from './songs/songs.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -28,6 +29,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ArtistsModule,
     CompaniesModule,
     SongsModule,
+    FormsModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     TranslateModule.forRoot({
