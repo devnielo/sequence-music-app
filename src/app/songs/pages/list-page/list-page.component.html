@@ -1,1 +1,53 @@
-<p>song-list works!</p>
+<shared-loader *ngIf="loading$ | async"></shared-loader>
+
+<div class="bg-dark bg-opacity-10 min-h-screen p-5">
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-headline text-white font-light">Canciones</h3>
+    <button
+      class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
+      (click)="navigateToAdd()"
+    >
+      Añadir canción
+    </button>
+  </div>
+  <!-- Lista de tarjetas -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ng-container *ngIf="songs$ | async as songs">
+      <div *ngFor="let song of songs" (click)="navigateToDetails(song.id)">
+        <!-- Tarjeta con imagen de fondo -->
+        <div class="relative rounded-lg shadow-md overflow-hidden h-56">
+          <!-- Imagen de fondo -->
+          <div
+            class="absolute inset-0 bg-cover bg-center"
+            [style.background-image]="'url(' + song.poster + ')'"
+          ></div>
+          <!-- Overlay con degradado -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black to-transparent"
+          ></div>
+          <!-- Contenido de la tarjeta -->
+          <div class="absolute bottom-0 p-4 w-full">
+            <!-- Título de la canción -->
+            <h3 class="text-white font-bold text-lg truncate">
+              {{ song.title }}
+            </h3>
+            <!-- Géneros visibles en móvil y tablet -->
+            <div class="text-secondary mt-2 md:hidden">
+              <span *ngFor="let genre of song.genre; let i = index">
+                #{{ genre }}<span *ngIf="i < song.genre.length - 1">, </span>
+              </span>
+            </div>
+            <!-- Resto de la información visible en escritorio -->
+            <div class="hidden lg:flex justify-between items-center mt-4">
+              <span class="text-info text-white">{{ song.year }}</span>
+              <span class="text-info text-white">{{ song.duration }}s</span>
+              <span class="text-success text-white"
+                >Rating: {{ song.rating }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

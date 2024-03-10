@@ -1,9 +1,8 @@
-<div class="flex flex-col h-full bg-background w-80 pr-2 pl-2 shadow-creative">
+<div class="flex flex-col h-full bg-[#121212] shadow-creative p-2">
   <!-- Título y botón de cerrar -->
-  <div class="flex items-center justify-between p-4 border-b border-primary bg-gradient-to-r from-secondary to-accent">
-    <h3 class="text-headline text-white font-bold">Sequence</h3>
-    <button class="text-white" (click)="closeSidebar()">
-      <!-- SVG o ícono para cerrar -->
+  <div class="flex items-center justify-between p-4 border-b border-gray-700">
+    <h3 class="text-xl text-white font-bold">Menu</h3>
+    <button class="text-gray-400 hover:text-white" (click)="closeSidebar()">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
       </svg>
@@ -15,25 +14,25 @@
     <ul class="space-y-2">
       <!-- Links de navegación -->
       <li>
-        <a routerLink="/songs" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+        <a routerLink="/songs" routerLinkActive="bg-primary text-white"  class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]">
           Canciones
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
       </li>
       <li>
-        <a routerLink="/artists" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+        <a routerLink="/artists" routerLinkActive="bg-primary text-white" class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]">
           Artistas
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
       </li>
       <li>
-        <a routerLink="/companies" routerLinkActive="bg-gradient-to-r from-secondary to-accent text-white" class="flex justify-between items-center p-4 rounded-xl hover:shadow-lg">
+        <a routerLink="/companies" routerLinkActive="bg-primary text-white" class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]">
           Compañías
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </a>

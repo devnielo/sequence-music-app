@@ -8,6 +8,10 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from './shared/shared.module';
 
+import { ArtistsModule } from './artists/artists.module';
+import { CompaniesModule } from './companies/companies.module';
+import { SongsModule } from './songs/songs.module';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -15,6 +19,9 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    ArtistsModule,
+    CompaniesModule,
+    SongsModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
   ],

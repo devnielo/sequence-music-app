@@ -11,4 +11,9 @@ export class SidebarComponent {
   closeSidebar() {
     this.close.emit();
   }
+  closeSidebarWithDelay() {
+    setTimeout(() => {
+      this.closeSidebar();
+    }, 300);
+  }
 }

@@ -1,103 +1,25 @@
-<div class="flex flex-col w-full bg-background">
-  <!-- Cabecera con título y botón de menú -->
-  <div
-    class="flex items-center justify-between p-4 bg-gradient-to-r from-secondary to-accent border-b border-primary"
-  >
-    <div class="flex items-center">
-      <button class="text-white mr-4" (click)="toggleSidebar()">
-        <!-- Icono de menú de Heroicons -->
-        <svg
-          class="h-6 w-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16m-7 6h7"
-          />
+<div class="flex flex-col min-h-screen bg-dark ">
+  <!-- Cabecera -->
+  <div class="flex items-center justify-between p-4 lg:px-16 bg-dark border-b-2 border-white">
+    <div class="flex items-center ">
+      <button class="text-white mr-3" (click)="toggleSidebar()">
+        <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </button>
-      <h3 class="text-headline text-white font-bold">
-        {{ title }}
-        <span *ngIf="adding" class="text-white font-thin ml-2">Añadiendo</span>
+      <h3 class="text-headline text-white font-light ">
+        SEQUENCE MUSIC
       </h3>
     </div>
-
-    <!-- Botones para escritorio -->
-    <div class="hidden md:flex items-center">
-      <!-- Botón Añadir -->
-      <button
-        class="ml-4 inline-flex items-center p-2 bg-primary text-white rounded hover:bg-primary-dark"
-        (click)="navigateToAdd()"
-        *ngIf="!adding"
-      >
-        <span class="mr-2">Añadir</span>
-        <!-- Icono de añadir de Heroicons -->
-        <svg
-          class="h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <!-- ... path del icono ... -->
-        </svg>
-      </button>
-      <!-- Botón Cancelar -->
-      <button
-        class="ml-4 inline-flex items-center p-2 bg-danger text-white rounded hover:bg-danger-dark"
-        (click)="cancelAdd()"
-        *ngIf="adding"
-      >
-        <span class="mr-2">Cancelar</span>
-        <!-- Icono de cancelar de Heroicons -->
-        <svg
-          class="h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <!-- ... path del icono ... -->
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Botones flotantes para móviles -->
-  <div class="fixed bottom-4 right-4 z-30 md:hidden">
-    <!-- Botón Añadir para móviles -->
-    <button
-      class="p-3 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark"
-      (click)="navigateToAdd()"
-      *ngIf="!adding"
-    >
-      <!-- Icono de añadir de Heroicons -->
-      <!-- ... icono ... -->
-    </button>
-    <!-- Botón Cancelar para móviles -->
-    <button
-      class="p-3 bg-danger text-white rounded-full shadow-lg hover:bg-danger-dark"
-      (click)="cancelAdd()"
-      *ngIf="adding"
-    >
-      <!-- Icono de cancelar de Heroicons -->
-      <!-- ... icono ... -->
-    </button>
   </div>
 
   <!-- Sidebar -->
-  <div
-    class="fixed inset-y-0 left-0 w-80 bg-white transform transition-transform duration-300 ease-in-out z-20"
-    [ngClass]="showSidebar ? 'translate-x-0' : '-translate-x-full'"
-  >
+  <div class="fixed inset-y-0 left-0 w-80 bg-white transform transition-transform duration-300 ease-in-out z-20" [ngClass]="showSidebar ? 'translate-x-0' : '-translate-x-full'">
     <shared-sidebar (close)="toggleSidebar()"></shared-sidebar>
   </div>
 
-  <!-- Contenido Principal -->
-  <div class="flex-1">
+  <!-- Contenido principal -->
+  <div class="flex-1 p-4 md:px-8 lg:px-16 bg-">
     <router-outlet></router-outlet>
   </div>
 </div>

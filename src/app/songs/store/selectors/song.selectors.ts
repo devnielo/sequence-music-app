@@ -1,7 +1,7 @@
 // src/app/songs/store/selectors/song.selectors.ts
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { SongState } from '../reducers/song.effects';
+import { SongState } from '../reducers/song.reducer';
 
 // Selector para obtener el feature state
 export const selectSongFeature = createFeatureSelector<SongState>('songs');

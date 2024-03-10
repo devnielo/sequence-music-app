@@ -20,12 +20,8 @@ const routes: Routes = [
       import('./artists/artists.module').then((m) => m.ArtistsModule),
   },
   {
-    path: '404',
-    component: Error404Page,
-  },
-  {
     path: '**',
-    redirectTo: '404',
+    redirectTo: 'songs',
   },
 ];
 

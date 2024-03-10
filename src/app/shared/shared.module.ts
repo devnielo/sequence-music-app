@@ -6,6 +6,7 @@ import { LayoutPageComponent } from './layout-page/layout-page.component';
 import { RouterModule } from '@angular/router';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +15,9 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     LayoutPageComponent,
     FloatingButtonComponent,
     SafeHtmlPipe,
+    LoaderComponent,
   ],
   imports: [CommonModule, RouterModule],
-  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe],
+  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe, LoaderComponent],
 })
 export class SharedModule {}
