@@ -12,6 +12,7 @@ import * as fromCompanySelectors from '../../../companies/store/selectors/compan
 import { Artist } from 'src/app/artists/interfaces/artist.interface';
 import { Company } from 'src/app/companies/interfaces/company.interface';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-form-page',
@@ -22,6 +23,7 @@ export class FormPageComponent implements OnInit {
   form!: FormGroup;
   artists$: Observable<Artist[]>;
   companies$: Observable<Company[]>;
+  availableGenres = environment.genres;
 
   constructor(private fb: FormBuilder, private store: Store, private router: Router) {
     // Inicializar los observables en el constructor
@@ -68,17 +70,20 @@ export class FormPageComponent implements OnInit {
     }
   }
 
-  get genres(): FormArray {
+  get genres() {
     return this.form.get('genres') as FormArray;
   }
 
-  addGenre(genre: string): void {
-    if (genre && !this.genres.controls.find(c => c.value === genre)) {
-      this.genres.push(this.fb.control(genre));
+  addGenre(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    if (input.value && this.availableGenres.includes(input.value)) {
+      this.genres.push(this.fb.control(input.value));
+      input.value = '';
     }
+    event.preventDefault();
   }
 
-  removeGenre(index: number): void {
+  removeGenre(index: number) {
     this.genres.removeAt(index);
   }
 

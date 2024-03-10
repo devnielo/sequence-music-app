@@ -1,0 +1,56 @@
+{
+  "TITLE": "Sequence Music",
+  "HOME": {
+    "WELCOME": "Bienvenido a Nuestra Página de Inicio",
+    "DESCRIPTION": "Esta es una descripción en Español"
+  },
+  "NAVIGATION": {
+    "HOME": "Inicio",
+    "ABOUT": "Acerca de",
+    "CONTACT": "Contacto"
+  },
+  "SONGS": {
+    "ADD_SONG": "Añadir Canción",
+    "SONG_LIST": "Lista de Canciones",
+    "GENRES": {
+      "Pop": "Pop",
+      "Rock": "Rock",
+      "Jazz": "Jazz",
+      "Blues": "Blues",
+      "Country": "Country",
+      "Folk": "Folk",
+      "Reggae": "Reggae",
+      "Hip Hop": "Hip Hop",
+      "R&B": "R&B",
+      "Electronic": "Electrónica",
+      "Classical": "Clásica",
+      "Metal": "Metal",
+      "Punk": "Punk",
+      "Soul": "Soul",
+      "Disco": "Disco",
+      "Funk": "Funk",
+      "Gospel": "Gospel",
+      "Techno": "Techno",
+      "House": "House",
+      "Trance": "Trance",
+      "Drum and Bass": "Drum and Bass",
+      "Dubstep": "Dubstep",
+      "Ambient": "Ambient",
+      "Latin": "Latino",
+      "Reggaeton": "Reggaeton",
+      "Ska": "Ska",
+      "Swing": "Swing",
+      "Bluegrass": "Bluegrass",
+      "Opera": "Ópera",
+      "Indie": "Indie",
+      "New Wave": "New Wave",
+      "Grunge": "Grunge",
+      "Alternative": "Alternativa",
+      "Psychedelic": "Psicodélica",
+      "World": "Música del mundo",
+      "Dance": "Dance",
+      "Hardcore": "Hardcore",
+      "Progressive": "Progresiva"
+    }
+  }
+}
