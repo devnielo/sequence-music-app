@@ -6,12 +6,15 @@ export interface UiState {
   showModal: boolean;
   modalTitle: string;
   modalMessage: string;
+  confirmAction: boolean | undefined;
 }
 
 export const initialState: UiState = {
   showModal: false,
   modalTitle: '',
-  modalMessage: ''
+  modalMessage: '',
+  confirmAction: undefined
+
 };
 
 export const uiReducer = createReducer(
@@ -22,8 +25,12 @@ export const uiReducer = createReducer(
     modalTitle: title,
     modalMessage: message
   })),
-  on(UiActions.hideSongModal, state => ({
+  on(UiActions.hideModal, state => ({
     ...state,
     showModal: false
+  })),
+  on(UiActions.confirmAction, state => ({
+    ...state,
+    confirmAction: true
   }))
 );

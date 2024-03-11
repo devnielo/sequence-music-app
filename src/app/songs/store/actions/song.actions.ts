@@ -16,13 +16,13 @@ export enum SongActionTypes {
   UPDATE_SONG_FAILURE = '[Song] Update Song Failure',
   DELETE_SONG = '[Song] Delete Song',
   DELETE_SONG_SUCCESS = '[Song] Delete Song Success',
-  DELETE_SONG_FAILURE = '[Song] Delete Song Failure'
+  DELETE_SONG_FAILURE = '[Song] Delete Song Failure',
+  EDIT_SONG = '[Song] Edit Song',
+  CLEAR_EDIT_SONG = '[Song] Clear Edit Song',
 }
 
 // Acciones para cargar todas las canciones
-export const loadSongs = createAction(
-  SongActionTypes.LOAD_SONGS
-);
+export const loadSongs = createAction(SongActionTypes.LOAD_SONGS);
 
 export const loadSongsSuccess = createAction(
   SongActionTypes.LOAD_SONGS_SUCCESS,
@@ -97,3 +97,11 @@ export const deleteSongFailure = createAction(
   SongActionTypes.DELETE_SONG_FAILURE,
   props<{ error: any }>()
 );
+
+// Acciones para el modo de edición
+export const editSong = createAction(
+  SongActionTypes.EDIT_SONG,
+  props<{ id: number }>()
+);
+
+export const clearEditSong = createAction(SongActionTypes.CLEAR_EDIT_SONG);

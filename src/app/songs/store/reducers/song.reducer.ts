@@ -13,57 +13,63 @@ export const initialState: SongState = {
   songs: [],
   currentSong: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 export const songReducer = createReducer(
   initialState,
-  on(SongActions.loadSongs, state => ({
+  on(SongActions.loadSongs, (state) => ({
     ...state,
     loading: true,
-    error: null
+    error: null,
   })),
   on(SongActions.loadSongsSuccess, (state, { songs }) => ({
     ...state,
     loading: false,
     songs: songs,
-    error: null
+    error: null,
   })),
   on(SongActions.loadSongsFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error: error,
   })),
-  on(SongActions.loadSong, state => ({
+  on(SongActions.loadSong, (state) => ({
     ...state,
     loading: true,
-    error: null
+    error: null,
   })),
   on(SongActions.loadSongSuccess, (state, { song }) => ({
     ...state,
     currentSong: song,
     loading: false,
-    error: null
+    error: null,
   })),
   on(SongActions.loadSongFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error: error,
   })),
-  on(SongActions.addSong, state => ({
+  on(SongActions.addSong, (state) => ({
     ...state,
-    loading: true
+    loading: true,
   })),
   on(SongActions.addSongSuccess, (state, { song }) => ({
     ...state,
     songs: [...state.songs, song],
-    loading: false
+    loading: false,
   })),
   on(SongActions.addSongFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error
+    error: error,
   })),
-  // Aquí agregarías los reducers para actualizar y eliminar canciones
-  // Asegúrate de manejar también sus respectivas acciones de éxito y error
+  on(SongActions.editSong, (state, { id }) => ({
+    ...state,
+    currentSong: state.songs.find((song) => song.id === id) || null,
+  })),
+  on(SongActions.clearEditSong, (state) => ({
+    ...state,
+    currentSong: null,
+  }))
 );

@@ -11,9 +11,9 @@ import { ListPageComponent } from './pages/list-page/list-page.component';
 import { DetailPageComponent } from './pages/detail-page/detail-page.component';
 import { FormPageComponent } from './pages/form-page/form-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { uiReducer } from '../shared/store/effects/ui.effects';
 
 @NgModule({
   declarations: [ListPageComponent, DetailPageComponent, FormPageComponent],
@@ -24,10 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
     StoreModule.forFeature('songs', songReducer),
+    StoreModule.forFeature('ui', uiReducer),
     EffectsModule.forFeature([SongEffects]),
   ],
-  exports: [
-    DetailPageComponent,
-  ],
+  exports: [DetailPageComponent],
 })
 export class SongsModule {}

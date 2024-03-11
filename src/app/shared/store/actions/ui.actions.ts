@@ -2,8 +2,14 @@
 import { createAction, props } from '@ngrx/store';
 
 export const showModal = createAction(
-  '[Song UI] Show Modal',
-  props<{ title: string; message: string }>()
+  '[Shared UI] Show Modal',
+  props<{
+    title: string;
+    message: string;
+    confirmAction: boolean | undefined;
+  }>()
 );
 
-export const hideSongModal = createAction('[Song UI] Hide Modal');
+export const hideModal = createAction('[Shared UI] Hide Modal');
+// Nueva acción para confirmar una acción
+export const confirmAction = createAction('[UI] Confirm Action');

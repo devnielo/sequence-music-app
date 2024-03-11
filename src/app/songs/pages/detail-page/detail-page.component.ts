@@ -6,6 +6,7 @@ import { Song } from '../../interfaces/song.interface';
 import { SongState } from '../../store/reducers/song.reducer';
 import * as SongActions from '../../store/actions/song.actions';
 import * as fromSongSelectors from '../../store/selectors/song.selectors';
+import * as UiActions from '../../../shared/store/actions/ui.actions';
 
 @Component({
   selector: 'app-detail-page',
@@ -35,6 +36,25 @@ export class DetailPageComponent implements OnInit {
     });
   }
 
+  deleteSongConfirm(id: number) {
+    this.store.dispatch(UiActions.showModal({
+      title: 'Confirmar Eliminación',
+      message: '¿Estás seguro de que quieres eliminar esta canción?',
+      confirmAction: true
+    }));
+  }
+
+  deleteSong(id: number) {
+    this.store.dispatch(SongActions.deleteSong({ id }));
+    this.router.navigate(['/songs']).then(() => {
+      this.store.dispatch(UiActions.showModal({
+        title: 'Eliminación completada',
+        message: 'La canción ha sido eliminada correctamente.',
+        confirmAction: true
+      }));
+    });
+  }
+
   navigateBack(): void {
     this.router.navigate(['/songs']);
   }
@@ -43,16 +63,4 @@ export class DetailPageComponent implements OnInit {
     this.router.navigate(['/songs/edit', songId]);
   }
 
-  deleteSongConfirm(id: number) {
-    // Dispatch acción para mostrar modal
-    /* this.store.dispatch(UiActions.showModal({
-      title: 'Confirmar Eliminación',
-      message: '¿Estás seguro de que quieres eliminar esta canción?'
-    })); */
-  }
-
-  handleConfirm() {
-    // Lógica al confirmar
-    this.showModal = false;
-  }
 }

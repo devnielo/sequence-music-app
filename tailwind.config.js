@@ -5,16 +5,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        dark: '#121212', // Very dark background
-        primary: '#8c67ef', // Primary purple
-        secondary: '#7f5af0', // Secondary purple
-        accent: '#6e44ff', // Accent purple
-        text: '#ffffff', // White text color for high contrast
-      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        // Include any other font families you might want to use
+        'sora': ['Sora', 'sans-serif'],
+        'sans': ['Inter', 'sans-serif'],
+      },
+      colors: {
+        dark: 'rgba(55, 58, 58, 1)',
+        primary: '#66ffcc', // Verde azulado claro
+        secondary: '#99ffd9', // Verde azulado más claro
+        accent: '#33cc99', // Verde azulado más oscuro
+        text: '#ffffff', // Blanco para el texto
       },
       borderRadius: {
         button: '0.5rem', // Rounded buttons

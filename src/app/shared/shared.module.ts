@@ -4,22 +4,33 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { Error404Page } from './error404-page/error404-page.component';
 import { LayoutPageComponent } from './layout-page/layout-page.component';
 import { RouterModule } from '@angular/router';
-import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
-import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { RatingComponent } from './components/rating-stars/rating-stars.component';
+import { StoreModule } from '@ngrx/store';
+import { uiReducer } from './store/effects/ui.effects';
 
 @NgModule({
   declarations: [
     Error404Page,
     SidebarComponent,
     LayoutPageComponent,
-    FloatingButtonComponent,
-    SafeHtmlPipe,
     LoaderComponent,
     ModalComponent,
+    RatingComponent,
   ],
-  imports: [CommonModule, RouterModule],
-  exports: [SidebarComponent, LayoutPageComponent, SafeHtmlPipe, LoaderComponent, ModalComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    StoreModule.forFeature('ui', uiReducer),
+  ],
+  exports: [
+    SidebarComponent,
+    LayoutPageComponent,
+    LoaderComponent,
+    ModalComponent,
+    RatingComponent,
+    StoreModule
+  ],
 })
 export class SharedModule {}

@@ -1,20 +1,6 @@
 {
   "songs": [
     {
-      "id": 2,
-      "title": "Penny Lane",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
-      "genre": [
-        "Rock",
-        "Pop",
-        "Chill"
-      ],
-      "year": 1967,
-      "duration": 303,
-      "rating": 8.99,
-      "artist": 2
-    },
-    {
       "id": 3,
       "title": "Hey Jude",
       "poster": "http://dummyimage.com/400x600.png/5fa2dd/ffffff",
@@ -139,21 +125,6 @@
       "duration": 502,
       "rating": 8.39,
       "artist": 7
-    },
-    {
-      "title": "Por la raja de tu falda",
-      "artist": [
-        5,
-        2
-      ],
-      "genres": [
-        "Rock",
-        "Pop"
-      ],
-      "year": 2000,
-      "rating": 9,
-      "poster": "http://dummyimage.com/400x600.png/#1e9036/000000",
-      "id": 12
     }
   ],
   "artists": [
