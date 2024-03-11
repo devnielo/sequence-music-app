@@ -36,7 +36,12 @@
   </div>
 
   <!-- Contenido principal -->
-  <div class="flex-1 p-4 md:px-8 lg:px-16">
-    <router-outlet></router-outlet>
-  </div>
+  <ng-container *ngIf="!(loaderService.loading$ | async)">
+    <div class="flex-1 p-4 md:px-8 lg:px-16">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-container>
+
+  <!-- Loader -->
+  <shared-loader *ngIf="loaderService.loading$ | async"></shared-loader>
 </div>

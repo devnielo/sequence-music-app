@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { LoaderService } from '../services/loader.service';
 
 @Component({
   selector: 'app-layout-page',
@@ -12,7 +13,7 @@ export class LayoutPageComponent {
   title: string = '';
   showSidebar: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public loaderService: LoaderService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Extrae la ruta de nivel superior

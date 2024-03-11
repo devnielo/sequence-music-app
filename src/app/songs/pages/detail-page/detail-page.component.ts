@@ -7,6 +7,7 @@ import { SongState } from '../../store/reducers/song.reducer';
 import * as SongActions from '../../store/actions/song.actions';
 import * as fromSongSelectors from '../../store/selectors/song.selectors';
 import * as UiActions from '../../../shared/store/actions/ui.actions';
+import { LoaderService } from 'src/app/shared/services/loader.service';
 
 @Component({
   selector: 'app-detail-page',
@@ -21,7 +22,8 @@ export class DetailPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService
   ) {
     this.loading$ = this.store.select(fromSongSelectors.selectSongsLoading);
     this.song$ = this.store.select(fromSongSelectors.selectCurrentSong).pipe(
@@ -32,8 +34,15 @@ export class DetailPageComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const songId = +params['id']; // + convierte el parámetro a número
+      this.store.select(fromSongSelectors.selectSongsLoading).subscribe(isLoading => {
+        if (isLoading) {
+          this.loaderService.show();
+        } else {
+          this.loaderService.hide();
+        }
+      });
       this.store.dispatch(SongActions.loadSong({ id: songId }));
-    });
+      });
   }
 
   deleteSongConfirm(id: number) {
