@@ -24,7 +24,7 @@ import { uiReducer } from '../shared/store/effects/ui.effects';
     ReactiveFormsModule,
     TranslateModule,
     StoreModule.forFeature('songs', songReducer),
-    StoreModule.forFeature('ui', uiReducer),
+    StoreModule.forFeature('ui', uiReducer), // Asegúrate de que esté registrado aquí
     EffectsModule.forFeature([SongEffects]),
   ],
   exports: [DetailPageComponent],

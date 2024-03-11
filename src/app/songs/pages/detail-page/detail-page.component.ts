@@ -1,7 +1,7 @@
 import { selectCurrentSong } from './../../store/selectors/song.selectors';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, map } from 'rxjs';
+import { EMPTY, Observable, Subscription, map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Song } from '../../interfaces/song.interface';
 import { SongState } from '../../store/reducers/song.reducer';
@@ -40,32 +40,47 @@ export class DetailPageComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
   }
 
-  deleteSongConfirm(id: number) {
-    // Mostrar el modal de confirmación
+  onDelete(songData: Song): void {
     this.store.dispatch(
       UiActions.showModal({
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar esta canción?',
-        confirmCallback: () => this.deleteSong(id),
+        confirmCallback: () => this.deleteSong(songData.id),
       })
     );
   }
 
-  deleteSong(id: number) {
-    console.log(id);
+  deleteSong(id: number): void {
+
+    this.store.dispatch(UiActions.startLoading()); // Iniciar el loader
 
     this.store.dispatch(SongActions.deleteSong({ id }));
-    this.router.navigate(['/songs']).then(() => {
-      this.store.dispatch(
-        UiActions.showModal({
-          title: 'Eliminación completada',
-          message: 'La canción ha sido eliminada correctamente.',
-        })
-      );
-    });
+
+    // Llamar a la función successCallback cuando la canción se haya eliminado y el loader se haya detenido
+    const successCallback = () => {
+      this.store.dispatch(UiActions.stopLoading()); // Detener el loader
+      this.showSuccessModal(); // Mostrar el modal de éxito después de la eliminación
+    };
+
+    // Esperar un corto período de tiempo antes de llamar a la función successCallback
+    setTimeout(successCallback, 1000); // Ajusta el tiempo según sea necesario
+  }
+
+
+  showSuccessModal(): void {
+    this.store.dispatch(
+      UiActions.showModal({
+        title: 'Eliminación Completada',
+        message: 'La canción ha sido eliminada correctamente.',
+        confirmCallback: () => {
+          this.navigateBack(); // Navegar hacia atrás solo después de aceptar el modal
+        },
+      })
+    );
   }
 
   navigateBack(): void {
+    this.store.dispatch(UiActions.hideModal());
     this.location.back();
   }
 

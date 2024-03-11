@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
-  selectConfirmAction,
+  selectConfirmCallback,
   selectModalMessage,
   selectModalTitle,
   selectShowModal,
@@ -18,13 +18,13 @@ export class ModalComponent {
   showModal$: Observable<boolean>;
   modalTitle$: Observable<string>;
   modalMessage$: Observable<string>;
-  confirmAction$: Observable<boolean | undefined>; // Cambiado a una función
+  confirmCallback$: Observable<(() => void) | undefined>;
 
   constructor(private store: Store) {
     this.showModal$ = this.store.select(selectShowModal);
     this.modalTitle$ = this.store.select(selectModalTitle);
     this.modalMessage$ = this.store.select(selectModalMessage);
-    this.confirmAction$ = this.store.select(selectConfirmAction);
+    this.confirmCallback$ = this.store.select(selectConfirmCallback);
   }
 
   close(): void {
@@ -32,10 +32,9 @@ export class ModalComponent {
   }
 
   continue(): void {
-    this.confirmAction$.pipe(take(1)).subscribe((result) => {
-      console.log(result);
-      if (result) {
-        //action();
+    this.confirmCallback$.subscribe((callback) => {
+      if (callback) {
+        callback();
       }
       this.close();
     });

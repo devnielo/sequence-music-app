@@ -91,14 +91,15 @@ export class SongEffects {
     this.actions$.pipe(
       ofType(SongActions.deleteSong),
       tap(() => this.store.dispatch(SongActions.loadingStart())), // Dispara la acción de inicio de carga
-      mergeMap(async (action) => {
-        try {
-          await this.songService.deleteSong(action.id);
-          return SongActions.deleteSongSuccess({ id: action.id });
-        } catch (error) {
-          return SongActions.deleteSongFailure({ error });
-        }
-      })
+      mergeMap((action) =>
+        this.songService.deleteSong(action.id).pipe(
+          map((response) => {
+            const song: any = response;
+            return SongActions.deleteSongSuccess({ id: action.id });
+          }),
+          catchError((error) => of(SongActions.deleteSongFailure({ error })))
+        )
+      )
     )
   );
 }

@@ -29,20 +29,6 @@
       "artist": 4
     },
     {
-      "id": 5,
-      "title": "Where the Streets Have No Name",
-      "poster": "http://dummyimage.com/400x600.png/ff4444/ffffff",
-      "genre": [
-        "Rock",
-        "Pop",
-        "Heavy"
-      ],
-      "year": 1982,
-      "duration": 217,
-      "rating": 8.36,
-      "artist": 5
-    },
-    {
       "id": 6,
       "title": "Who Says",
       "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
@@ -54,21 +40,6 @@
       "duration": 340,
       "rating": 7.99,
       "artist": 1
-    },
-    {
-      "id": 7,
-      "title": "With or without you",
-      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
-      "genre": [
-        "Rock",
-        "Pop",
-        "Alternative",
-        "Blues"
-      ],
-      "year": 1972,
-      "duration": 305,
-      "rating": 6.77,
-      "artist": 5
     },
     {
       "id": 8,
@@ -125,6 +96,17 @@
       "duration": 502,
       "rating": 8.39,
       "artist": 7
+    },
+    {
+      "title": "Por la raja de tu falda",
+      "artist": [],
+      "genre": [],
+      "year": 2000,
+      "rating": 10,
+      "duration": 200,
+      "country": "Albania",
+      "poster": "https://www.cadenadial.com/wp-content/uploads/2020/04/GettyImages-1174302151-e1632129227811.jpg",
+      "id": 12
     }
   ],
   "artists": [

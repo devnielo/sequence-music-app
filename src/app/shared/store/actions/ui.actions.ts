@@ -1,15 +1,18 @@
-// src/app/store/actions/ui.actions.ts
 import { createAction, props } from '@ngrx/store';
 
+// Acción para mostrar un modal
 export const showModal = createAction(
   '[Shared UI] Show Modal',
   props<{
-    title: string;
-    message: string;
-    confirmCallback?: () => void;
+    title: string;            // Título del modal
+    message: string;          // Mensaje del modal
+    confirmCallback?: () => void; // Callback opcional para confirmar una acción
   }>()
 );
 
+// Acción para ocultar un modal
 export const hideModal = createAction('[Shared UI] Hide Modal');
-// Nueva acción para confirmar una acción
-export const confirmAction = createAction('[UI] Confirm Action');
+
+// Acciones para controlar el estado de carga
+export const startLoading = createAction('[UI] Start Loading');
+export const stopLoading = createAction('[UI] Stop Loading');

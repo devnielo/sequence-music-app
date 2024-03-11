@@ -1,6 +1,5 @@
-// ui.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UiState } from '../effects/ui.effects';
+import { UiState } from '../reducers/ui.reducers';
 
 export const selectUIFeature = createFeatureSelector<UiState>('ui');
 
@@ -19,7 +18,12 @@ export const selectModalMessage = createSelector(
   (state: UiState) => state.modalMessage
 );
 
-export const selectConfirmAction = createSelector(
+export const selectIsLoading = createSelector(
   selectUIFeature,
-  (state: UiState) => state.confirmAction
+  (state: UiState) => state.isLoading
+);
+
+export const selectConfirmCallback = createSelector(
+  selectUIFeature,
+  (state: UiState) => state.confirmCallback
 );

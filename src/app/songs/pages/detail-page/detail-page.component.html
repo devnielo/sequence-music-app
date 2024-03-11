@@ -1,54 +1,51 @@
 <div class="min-h-screen p-4 md:p-8 bg-background">
-  <!-- Encabezado -->
-  <div class="flex justify-between items-center mb-6 text-primary-dark">
-    <h2 class="text-xl md:text-2xl font-semibold">Detalles de la Canción</h2>
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-primary-dark">{{ 'TITLE' | translate }}</h2>
     <button
-      class="bg-primary text-dark py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
+      class="flex items-center justify-center bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-primary-dark transition duration-300"
       (click)="navigateBack()"
     >
-      Volver
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      {{ 'BACK_BUTTON' | translate }}
     </button>
   </div>
 
   <ng-container *ngIf="song$ | async as song">
-    <!-- Detalle de la canción -->
-    <div class="bg-white rounded-lg shadow overflow-hidden md:flex">
-      <!-- Imagen de la canción -->
-      <div class="md:flex-shrink-0">
-        <img
-          [src]="song.poster"
-          alt="{{ song.title }}"
-          class="object-cover md:w-48 lg:w-64 h-48 lg:h-64 w-full"
-        />
-      </div>
-
-      <!-- Información de la canción -->
-      <div class="p-4">
-        <h3 class="text-2xl font-bold mb-2">{{ song.title }}</h3>
-        <p class="text-sm text-gray-600 mb-4">
-          <span class="font-medium">Géneros:</span>
-          <span *ngFor="let genre of song.genre; let i = index">
-            {{ genre }}<span *ngIf="i < song.genre.length - 1">, </span>
-          </span>
-        </p>
-        <p class="text-sm text-gray-600 mb-2">Año: {{ song.year }}</p>
-        <p class="text-sm text-gray-600 mb-2">Duración: {{ song.duration }}s</p>
-        <shared-rating class="mb-4" [rating]="song.rating"></shared-rating>
-
-        <!-- Botones de acción -->
-        <div class="flex gap-4">
-          <button
-            class="bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300"
-            (click)="navigateToEdit(song.id)"
-          >
-            Editar
-          </button>
-          <button
-            class="bg-danger text-dark py-2 px-4 rounded-full hover:bg-danger-dark transition duration-300 border border-danger-dark"
-            (click)="deleteSongConfirm(song.id)"
-          >
-            Eliminar
-          </button>
+    <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+      <div class="lg:flex">
+        <div class="lg:w-1/2">
+          <img [src]="song.poster" alt="{{ song.title }}" class="object-cover w-full h-64 lg:h-full" />
+        </div>
+        <div class="p-6 lg:w-1/2">
+          <h3 class="text-2xl font-bold mb-3">{{ song.title }}</h3>
+          <div class="flex items-center mb-4">
+            <span class="text-gray-600 mr-3">{{ 'RATING' | translate }}</span>
+            <shared-rating [rating]="song.rating"></shared-rating>
+          </div>
+          <p class="text-gray-600 mb-2">{{ 'YEAR' | translate }}: <span class="font-semibold">{{ song.year }}</span></p>
+          <p class="text-gray-600 mb-4">{{ 'DURATION' | translate }}: <span class="font-semibold">{{ song.duration }} {{ 'SECONDS' | translate }}</span></p>
+          <p class="text-gray-600 mb-4">
+            <span class="font-semibold">{{ 'GENRES' | translate }}</span>
+            <span *ngFor="let genre of song.genre; let isLast=last" class="mr-1">
+              {{ genre }}<span *ngIf="!isLast">,</span>
+            </span>
+          </p>
+          <div class="flex gap-3">
+            <button
+              class="bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300"
+              (click)="navigateToEdit(song.id)"
+            >
+              {{ 'EDIT_BUTTON' | translate }}
+            </button>
+            <button
+              class="bg-danger text-dark py-2 px-4 rounded-full hover:bg-danger-dark transition duration-300 border border-danger-dark"
+              (click)="onDelete(song)"
+            >
+              {{ 'DELETE_BUTTON' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

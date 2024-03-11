@@ -8,7 +8,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { RatingComponent } from './components/rating-stars/rating-stars.component';
 import { StoreModule } from '@ngrx/store';
-import { uiReducer } from './store/effects/ui.effects';
+import { uiReducer } from './store/reducers/ui.reducers'; // Asegúrate de que esta es la ruta correcta
 
 @NgModule({
   declarations: [
@@ -30,7 +30,6 @@ import { uiReducer } from './store/effects/ui.effects';
     LoaderComponent,
     ModalComponent,
     RatingComponent,
-    StoreModule
   ],
 })
 export class SharedModule {}
