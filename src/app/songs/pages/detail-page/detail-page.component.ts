@@ -8,11 +8,11 @@ import { SongState } from '../../store/reducers/song.reducer';
 import * as SongActions from '../../store/actions/song.actions';
 import * as fromSongSelectors from '../../store/selectors/song.selectors';
 import * as UiActions from '../../../shared/store/actions/ui.actions';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-detail-page',
   templateUrl: './detail-page.component.html',
-  styleUrls: ['./detail-page.component.css'],
 })
 export class DetailPageComponent implements OnInit, OnDestroy {
   song$: Observable<Song | null>;
@@ -22,7 +22,8 @@ export class DetailPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     this.song$ = this.store.select(selectCurrentSong);
     this.loading$ = this.store.select(fromSongSelectors.selectSongsLoading);
@@ -45,7 +46,7 @@ export class DetailPageComponent implements OnInit, OnDestroy {
       UiActions.showModal({
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar esta canción?',
-        confirmCallback: () => this.deleteSong(id), // Llamar a la función deleteSong si se confirma la acción
+        confirmCallback: () => this.deleteSong(id),
       })
     );
   }
@@ -65,7 +66,7 @@ export class DetailPageComponent implements OnInit, OnDestroy {
   }
 
   navigateBack(): void {
-    this.router.navigate(['/songs']);
+    this.location.back();
   }
 
   navigateToEdit(songId: number): void {
