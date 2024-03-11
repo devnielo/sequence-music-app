@@ -6,7 +6,7 @@ export const showModal = createAction(
   props<{
     title: string;
     message: string;
-    confirmAction: boolean | undefined;
+    confirmCallback?: () => void;
   }>()
 );
 

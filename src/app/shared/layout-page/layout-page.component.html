@@ -2,7 +2,8 @@
   <!-- Cabecera -->
   <div class="flex items-center justify-between p-4 bg-dark lg:px-16">
     <div class="flex items-center">
-      <button class="text-white mr-3" (click)="toggleSidebar()">
+      <!-- Botón del Sidebar -->
+      <button class="text-white mr-3 lg:hidden" (click)="toggleSidebar()">
         <svg
           class="h-10 w-10"
           xmlns="http://www.w3.org/2000/svg"
@@ -18,12 +19,67 @@
           />
         </svg>
       </button>
+      <!-- Logo -->
       <img
         src="assets/images/logo.png"
         alt="Sequence Music Logo"
         class="h-10 w-auto"
       />
       <h3 class="text-primary mt-1 ml-2 hidden lg:block">| MUSIC</h3>
+    </div>
+    <!-- Menú a la derecha del icono en ordenadores -->
+    <div class="hidden lg:flex items-center justify-end space-x-4">
+      <!-- Menú -->
+      <ul class="flex space-x-4">
+        <li>
+          <a routerLink="/songs" routerLinkActive="font-bold" class="text-white"
+            >Canciones</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/artists"
+            routerLinkActive="font-bold"
+            class="text-white"
+            >Artistas</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/companies"
+            routerLinkActive="font-bold"
+            class="text-white"
+            >Compañías</a
+          >
+        </li>
+      </ul>
+
+      <!-- Banderas y separador -->
+      <div class="flex items-center">
+        <!-- Bandera de España -->
+        <div class="relative">
+          <img
+            src="/assets/images/es-flag.png"
+            alt="Bandera de España"
+            (click)="changeLanguage('es')"
+            class="h-6 cursor-pointer"
+          />
+        </div>
+
+        <!-- Separador -->
+        <span class="mx-2 text-white text-xl">|</span>
+        <!-- Barra separadora -->
+
+        <!-- Bandera de Estados Unidos -->
+        <div class="relative">
+          <img
+            src="/assets/images/us-flag.png"
+            alt="Bandera de Estados Unidos"
+            (click)="changeLanguage('us')"
+            class="h-6 cursor-pointer"
+          />
+        </div>
+      </div>
     </div>
   </div>
 
@@ -36,12 +92,10 @@
   </div>
 
   <!-- Contenido principal -->
-  <ng-container *ngIf="!(loaderService.loading$ | async)">
-    <div class="flex-1 p-4 md:px-8 lg:px-16">
-      <router-outlet></router-outlet>
-    </div>
-  </ng-container>
+  <div class="flex-1 p-4 md:px-8 lg:px-16">
+    <router-outlet></router-outlet>
+  </div>
 
   <!-- Loader -->
-  <shared-loader *ngIf="loaderService.loading$ | async"></shared-loader>
+  <shared-loader *ngIf="isLoading"></shared-loader>
 </div>

@@ -1,29 +1,21 @@
+// loader.component.ts
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { LoaderService } from '../../services/loader.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { selectSongsLoading } from 'src/app/songs/store/selectors/song.selectors';
+import { SongState } from 'src/app/songs/store/reducers/song.reducer';
 
 @Component({
   selector: 'shared-loader',
   templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.css']
+  styleUrls: ['./loader.component.css'],
 })
 export class LoaderComponent {
-  loading = false;
-  private loadingSubscription!: Subscription;
+  loading$!: Observable<boolean>;
 
-  constructor(private loaderService: LoaderService) {}
+  constructor(private store: Store<SongState>) {}
 
   ngOnInit() {
-    this.loadingSubscription = this.loaderService.loading$.subscribe(
-      (isLoading: boolean) => {
-        this.loading = isLoading;
-      }
-    );
-  }
-
-  ngOnDestroy() {
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
+    this.loading$ = this.store.pipe(select(selectSongsLoading));
   }
 }

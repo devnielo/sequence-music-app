@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom, from, map, mergeMap } from 'rxjs';
 import { Song } from '../interfaces/song.interface';
 import { ApiService } from '../../core/services/api.service';
 import { ApiResponse } from 'src/app/core/models/api-response.model';
@@ -34,4 +34,18 @@ export class SongService {
   deleteSong(id: number): Observable<{}> {
     return this.apiService.delete<{}>(`songs/${id}`);
   }
+
+  searchSongs(query: string): Observable<Song[]> {
+    return from(this.apiService.get<ApiResponse<Song[]>>(`songs?q=${query}`).pipe(
+      mergeMap(async response => {
+        try {
+          const results: any = response;
+          return results;
+        } catch (error) {
+          throw error;
+        }
+      })
+    ));
+  }
+
 }

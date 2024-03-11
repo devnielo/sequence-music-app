@@ -10,6 +10,7 @@ import { artistReducer } from './store/reducers/artist.reducers';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ArtistEffects } from './store/effects/artist.effects';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [DetailPageComponent, FormPageComponent, ListPageComponent],
@@ -17,6 +18,7 @@ import { ArtistEffects } from './store/effects/artist.effects';
     CommonModule,
     ArtistsRoutingModule,
     SharedModule,
+    TranslateModule,
     StoreModule.forFeature('artists', artistReducer),
     EffectsModule.forFeature([ArtistEffects]),
   ],

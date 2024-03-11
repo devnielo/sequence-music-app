@@ -11,6 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { companyReducer } from './store/reducers/company.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { CompanyEffects } from './store/effects/company.effects';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [DetailPageComponent, FormPageComponent, ListPageComponent],
@@ -18,6 +19,7 @@ import { CompanyEffects } from './store/effects/company.effects';
     CommonModule,
     CompaniesRoutingModule,
     SharedModule,
+    TranslateModule,
     StoreModule.forFeature('companies', companyReducer),
     EffectsModule.forFeature([CompanyEffects]),
   ],

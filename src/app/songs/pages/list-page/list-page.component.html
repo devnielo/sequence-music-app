@@ -1,72 +1,100 @@
-<shared-loader *ngIf="loading$ | async"></shared-loader>
-
 <div class="min-h-screen p-5 relative">
-  <!-- Encabezado -->
+  <!-- Encabezado y buscador -->
   <div class="flex justify-between items-center mb-6">
-    <h3 class="text-headline text-dark font-light">Canciones</h3>
+    <h3 class="text-headline text-dark font-bold">
+      {{ "TITLE_SONGS" | translate }}
+    </h3>
+
+    <div class="hidden md:flex items-center gap-8">
+      <!-- Campo de búsqueda -->
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"
+        class="flex-1 mt-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 cursor-pointer"
+      />
+      <!-- Botón de búsqueda -->
+      <button
+        class="bg-primary py-2 px-4 rounded hover:bg-primary-dark transition duration-300 shadow-md"
+        [routerLink]="['/songs/add']"
+        translate
+        aria-label="ADD_BUTTON"
+      >
+        {{ "ADD_SONG" | translate }}
+      </button>
+    </div>
+
+    <!-- Botón para añadir canción (solo visible en móviles y tabletas) -->
     <button
-  class="bg-primary p-4 text-dark rounded-full fixed bottom-5 right-5 shadow-md hover:bg-primary-dark transition duration-300 md:hidden z-10"
-  (click)="navigateToAdd()"
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="h-6 w-6 "
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-    ></path>
-  </svg>
-</button>
-
-
+      class="bg-primary p-4 text-dark rounded-full fixed bottom-5 right-5 shadow-md hover:bg-primary-dark transition duration-300 md:hidden z-10"
+      [routerLink]="['/songs/add']"
+      translate
+      aria-label="ADD_BUTTON"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+        />
+      </svg>
+    </button>
   </div>
 
   <!-- Lista de tarjetas -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <ng-container *ngIf="songs$ | async as songs">
-      <div *ngFor="let song of songs" (click)="navigateToDetails(song.id)">
-        <!-- Tarjeta con imagen de fondo -->
-        <div
-          class="relative rounded-lg shadow-md overflow-hidden h-56 cursor-pointer"
-        >
-          <!-- Título de la canción (siempre visible) -->
-          <div class="absolute top-0 left-0 p-4 z-10">
-            <h3 class="text-white font-bold text-lg break-words">
-              {{ song.title }}
-            </h3>
-          </div>
-          <!-- Imagen de fondo -->
+      <ng-container *ngIf="songs.length > 0; else noMatches">
+        <div *ngFor="let song of songs" (click)="navigateToDetails(song.id)">
+          <!-- Tarjeta con imagen de fondo -->
           <div
-            class="absolute inset-0 bg-cover bg-center"
-            [style.background-image]="'url(' + song.poster + ')'"
-          ></div>
-          <!-- Overlay con degradado -->
-          <div
-            class="absolute inset-0 bg-gradient-to-t from-black to-transparent"
-          ></div>
-          <!-- Contenido de la tarjeta -->
-          <div class="absolute bottom-0 p-4 w-full">
-            <!-- Géneros -->
-            <div class="text-secondary mt-2">
-              <span *ngFor="let genre of song.genre; let i = index">
-                #{{ genre }}<span *ngIf="i < song.genre.length - 1">, </span>
-              </span>
+            class="relative rounded-lg shadow-md overflow-hidden h-56 cursor-pointer"
+          >
+            <!-- Título de la canción (siempre visible) -->
+            <div class="absolute top-0 left-0 p-4 z-10">
+              <h3 class="text-white font-bold text-lg break-words">
+                {{ song.title }}
+              </h3>
             </div>
-            <!-- Información adicional -->
-            <div class="hidden lg:flex justify-between items-center mt-4">
-              <span class="text-info text-white">{{ song.year }}</span>
-              <span class="text-info text-white">{{ song.duration }}s</span>
-              <shared-rating [rating]="song.rating"></shared-rating>
+            <!-- Imagen de fondo -->
+            <div
+              class="absolute inset-0 bg-cover bg-center"
+              [style.background-image]="'url(' + song.poster + ')'"
+            ></div>
+            <!-- Overlay con degradado -->
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black to-transparent"
+            ></div>
+            <!-- Contenido de la tarjeta -->
+            <div class="absolute bottom-0 p-4 w-full">
+              <!-- Géneros -->
+              <div class="text-secondary mt-2">
+                <span *ngFor="let genre of song.genre; let i = index">
+                  #{{ genre }}<span *ngIf="i < song.genre.length - 1">, </span>
+                </span>
+              </div>
+              <!-- Información adicional -->
+              <div class="hidden lg:flex justify-between items-center mt-4">
+                <span class="text-info text-white">{{ song.year }}</span>
+                <span class="text-info text-white">{{ song.duration }}s</span>
+                <shared-rating [rating]="song.rating"></shared-rating>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
+    <ng-template #noMatches>
+      <div class="text-center">
+        <p>{{ "NO_MATCHES_FOUND" | translate }}</p>
+      </div>
+    </ng-template>
   </div>
 </div>

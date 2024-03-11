@@ -1,17 +1,15 @@
 {
   "TITLE_PAGE": "Sequence Music",
-  "HOME": {
-    "WELCOME": "Bienvenido a Nuestra Página de Inicio",
-    "DESCRIPTION": "Esta es una descripción en Español"
-  },
-  "NAVIGATION": {
-    "HOME": "Inicio",
-    "ABOUT": "Acerca de",
-    "CONTACT": "Contacto"
-  },
+  "COMING_SOON": "¡Muy pronto!",
+  "TITLE_SONGS": "Canciones",
+  "ADD_BUTTON": "Añadir canción",
   "ADD_NEW_SONG": "Añadir nueva canción",
   "EDITING_SONG": "Editando canción",
+  "SEARCH_PLACEHOLDER": "Buscar una canción...",
+  "NO_MATCHES_FOUND": "No se encontró ninguna coincidencia.",
   "CANCEL": "Cancelar",
+  "ADD_DURATION": "Indique la duración",
+  "DURATION": "Duración",
   "TITLE": "Título",
   "ARTIST": "Artistas",
   "GENRE": "Género",

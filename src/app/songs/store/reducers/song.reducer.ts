@@ -18,6 +18,14 @@ export const initialState: SongState = {
 
 export const songReducer = createReducer(
   initialState,
+  on(SongActions.loadingStart, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(SongActions.loadingComplete, (state) => ({
+    ...state,
+    loading: false,
+  })),
   on(SongActions.loadSongs, (state) => ({
     ...state,
     loading: true,
@@ -26,13 +34,13 @@ export const songReducer = createReducer(
   on(SongActions.loadSongsSuccess, (state, { songs }) => ({
     ...state,
     loading: false,
-    songs: songs,
+    songs,
     error: null,
   })),
   on(SongActions.loadSongsFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error,
+    error,
   })),
   on(SongActions.loadSong, (state) => ({
     ...state,
@@ -48,7 +56,7 @@ export const songReducer = createReducer(
   on(SongActions.loadSongFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error,
+    error,
   })),
   on(SongActions.addSong, (state) => ({
     ...state,
@@ -62,7 +70,7 @@ export const songReducer = createReducer(
   on(SongActions.addSongFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error: error,
+    error,
   })),
   on(SongActions.editSong, (state, { id }) => ({
     ...state,

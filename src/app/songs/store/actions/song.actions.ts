@@ -19,7 +19,16 @@ export enum SongActionTypes {
   DELETE_SONG_FAILURE = '[Song] Delete Song Failure',
   EDIT_SONG = '[Song] Edit Song',
   CLEAR_EDIT_SONG = '[Song] Clear Edit Song',
+  LOADING_START = '[Song] Loading Start', // Nueva acción para iniciar la carga
+  LOADING_COMPLETE = '[Song] Loading Complete' // Nueva acción para completar la carga
 }
+
+// Acción para iniciar la carga
+export const loadingStart = createAction(SongActionTypes.LOADING_START);
+
+// Acción para completar la carga
+export const loadingComplete = createAction(SongActionTypes.LOADING_COMPLETE);
+
 
 // Acciones para cargar todas las canciones
 export const loadSongs = createAction(SongActionTypes.LOAD_SONGS);

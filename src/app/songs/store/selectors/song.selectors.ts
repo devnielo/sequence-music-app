@@ -1,29 +1,29 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SongState } from '../reducers/song.reducer';
 
-// Selector para obtener el feature state de las canciones
-export const selectSongFeature = createFeatureSelector<SongState>('songs');
+// Selecciona el estado de las canciones
+export const selectSongState = createFeatureSelector<SongState>('songs');
 
-// Selector para obtener todas las canciones
+// Selecciona todas las canciones
 export const selectAllSongs = createSelector(
-  selectSongFeature,
+  selectSongState,
   (state: SongState) => state.songs
 );
 
-// Selector para obtener la información de carga
+// Selecciona el estado de carga de las canciones
 export const selectSongsLoading = createSelector(
-  selectSongFeature,
+  selectSongState,
   (state: SongState) => state.loading
 );
 
-// Selector para obtener una canción específica
+// Selecciona la canción actual
 export const selectCurrentSong = createSelector(
-  selectSongFeature,
+  selectSongState,
   (state: SongState) => state.currentSong
 );
 
 // Selector para obtener cualquier error relacionado con las canciones
 export const selectSongsError = createSelector(
-  selectSongFeature,
+  selectSongState,
   (state: SongState) => state.error
 );

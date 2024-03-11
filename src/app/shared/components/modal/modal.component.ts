@@ -34,7 +34,6 @@ export class ModalComponent {
   continue(): void {
     this.confirmAction$.pipe(take(1)).subscribe((result) => {
       console.log(result);
-
       if (result) {
         //action();
       }

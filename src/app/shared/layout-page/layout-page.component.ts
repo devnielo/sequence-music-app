@@ -1,55 +1,42 @@
-import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { LoaderService } from '../services/loader.service';
+// layout-page.component.ts
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { SongState } from 'src/app/songs/store/reducers/song.reducer';
+import { selectSongsLoading } from 'src/app/songs/store/selectors/song.selectors';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-layout-page',
   templateUrl: './layout-page.component.html',
-  // styleUrls: ['./layout-page.component.css'] // si tienes estilos
 })
 export class LayoutPageComponent {
-  currentRoute: string = '';
-  adding: boolean = false;
-  title: string = '';
   showSidebar: boolean = false;
+  isLoading: boolean = false;
+  isMenuOpen: boolean = false;
 
-  constructor(private router: Router, public loaderService: LoaderService) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Extrae la ruta de nivel superior
-        const rootRoute = event.url.split('/')[1];
-        if (this.currentRoute !== rootRoute) {
-          this.currentRoute = rootRoute;
-          this.title = this.getTitle(rootRoute);
-        }
-        this.adding = event.url.includes('add');
-      }
+  constructor(
+    private store: Store<SongState>,
+    private cdr: ChangeDetectorRef,
+    private languageService: LanguageService
+  ) {
+    this.store.pipe(select(selectSongsLoading)).subscribe((loading) => {
+      setTimeout(() => {
+        this.isLoading = loading;
+        this.cdr.detectChanges();
+      });
     });
   }
 
-  getTitle(route: string): string {
-    switch (route) {
-      case 'songs':
-        return 'Canciones';
-      case 'artists':
-        return 'Artistas';
-      case 'companies':
-        return 'Compañías';
-      default:
-        return '';
-    }
+  getCurrentLanguage(): string {
+    return this.languageService.getLanguage();
   }
 
-  navigateToAdd(): void {
-    const addRoute = this.currentRoute + '/add';
-    this.router.navigate([addRoute]);
+  changeLanguage(language: string) {
+    console.log(language);
+    this.languageService.setLanguage(language);
   }
 
-  cancelAdd(): void {
-    this.router.navigate(['/' + this.currentRoute]);
-  }
-
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
   }
 }
