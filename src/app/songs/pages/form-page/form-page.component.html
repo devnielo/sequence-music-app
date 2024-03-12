@@ -22,7 +22,7 @@
       />
       <img
         *ngIf="!form.get('poster')?.value"
-        [src]="generaTeRandomImage()"
+        [src]="imgUrl"
         alt="Song Image"
         class="w-full h-full object-cover rounded-r"
       />
@@ -44,11 +44,8 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_SONG_TITLE' | translate }}"
         />
-        <div
-          *ngIf="form.get('title')?.invalid && form.get('title')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "TITLE_REQUIRED" | translate }}
+        <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-red-600 text-sm mt-1">
+          {{ "VALIDATOR_TITLE" | translate }}
         </div>
       </div>
 
@@ -109,11 +106,9 @@
             </ng-container>
           </div>
         </div>
-        <div
-          *ngIf="form.get('artist')?.invalid && form.get('artist')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "ARTIST_REQUIRED" | translate }}
+        <div *ngIf="submitted && form.get('artist')?.invalid && form.get('artist')?.touched"
+        class="text-red-600 text-sm mt-1">
+        {{ "VALIDATOR_ARTIST" | translate }}
         </div>
       </div>
 
@@ -190,11 +185,8 @@
             </ng-container>
           </div>
         </div>
-        <div
-          *ngIf="form.get('genre')?.invalid && form.get('genre')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "GENRE_REQUIRED" | translate }}
+        <div *ngIf="submitted && form.get('genre')?.invalid && form.get('genre')?.touched"
+        class="text-red-600 text-sm mt-1">          {{ "VALIDATOR_GENRE" | translate }}
         </div>
       </div>
 
@@ -237,7 +229,7 @@
           class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 cursor-pointer relative"
           (click)="toggleDropdown('country')"
         >
-          <div class="pl-3 pr-10 py-2 bg-white text-gray-700">
+          <div class="pl-3 pr-10 py-2 rounded-md bg-white  text-gray-700">
             {{ selectedCountry || ("SELECT_COUNTRY" | translate) }}
           </div>
           <div
@@ -263,11 +255,8 @@
             >
           </div>
         </div>
-        <div
-          *ngIf="form.get('country')?.invalid && form.get('country')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "COUNTRY_REQUIRED" | translate }}
+        <div *ngIf="form.get('country')?.invalid && form.get('country')?.touched" class="text-red-600 text-sm mt-1">
+          {{ "VALIDATOR_COUNTRY" | translate }}
         </div>
       </div>
 
@@ -286,11 +275,16 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_YEAR' | translate }}"
         />
-        <div
-          *ngIf="form.get('year')?.invalid && form.get('year')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "YEAR_REQUIRED" | translate }}
+        <div *ngIf="form.get('year')?.invalid && form.get('year')?.touched" class="text-red-600 text-sm mt-1">
+          <ng-container *ngIf="form.get('year')?.errors?.['required']">
+            {{ "VALIDATOR_YEAR.REQUIRED" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('year')?.errors?.['min']">
+            {{ "VALIDATOR_YEAR.MIN" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('year')?.errors?.['max']">
+            {{ "VALIDATOR_YEAR.MAX" | translate }}
+          </ng-container>
         </div>
       </div>
 
@@ -309,11 +303,16 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_RATING' | translate }}"
         />
-        <div
-          *ngIf="form.get('rating')?.invalid && form.get('rating')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "RATING_REQUIRED" | translate }}
+        <div *ngIf="form.get('rating')?.invalid && form.get('rating')?.touched" class="text-red-600 text-sm mt-1">
+          <ng-container *ngIf="form.get('rating')?.errors?.['required']">
+            {{ "VALIDATOR_RATING.REQUIRED" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('rating')?.errors?.['min']">
+            {{ "VALIDATOR_RATING.MIN" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('rating')?.errors?.['max']">
+            {{ "VALIDATOR_RATING.MAX" | translate }}
+          </ng-container>
         </div>
       </div>
 
@@ -332,12 +331,18 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ADD_DURATION' | translate }}"
         />
-        <div
-          *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched"
-          class="text-red-600 text-sm mt-1"
-        >
-          {{ "DURATION_REQUIRED" | translate }}
+        <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched" class="text-red-600 text-sm mt-1">
+          <ng-container *ngIf="form.get('duration')?.errors?.['required']">
+            {{ "VALIDATOR_DURATION.REQUIRED" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('duration')?.errors?.['min']">
+            {{ "VALIDATOR_DURATION.MIN" | translate }}
+          </ng-container>
+          <ng-container *ngIf="form.get('duration')?.errors?.['max']">
+            {{ "VALIDATOR_DURATION.MAX" | translate }}
+          </ng-container>
         </div>
+
       </div>
 
       <!-- Campo de URL de imagen -->
@@ -355,6 +360,9 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_IMAGE_URL' | translate }}"
         />
+        <div *ngIf="form.get('poster')?.invalid && form.get('poster')?.touched" class="text-red-600 text-sm mt-1">
+          {{ "VALIDATOR_POSTER" | translate }}
+        </div>
       </div>
 
       <!-- Botón de envío -->
@@ -395,3 +403,5 @@
     </div>
   </div>
 </div>
+
+<shared-modal></shared-modal>

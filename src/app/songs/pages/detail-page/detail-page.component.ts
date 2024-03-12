@@ -1,7 +1,7 @@
 import { selectCurrentSong } from './../../store/selectors/song.selectors';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, Subscription, map } from 'rxjs';
+import { EMPTY, Observable, Subscription, combineLatest, map } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Song } from '../../interfaces/song.interface';
 import { SongState } from '../../store/reducers/song.reducer';
@@ -18,6 +18,7 @@ export class DetailPageComponent implements OnInit, OnDestroy {
   song$: Observable<Song | null>;
   loading$: Observable<boolean>;
   private routeSub!: Subscription;
+  private songSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,10 +35,31 @@ export class DetailPageComponent implements OnInit, OnDestroy {
       const songId = +params['id'];
       this.store.dispatch(SongActions.loadSong({ id: songId }));
     });
+    const combined$ = combineLatest([this.song$, this.loading$]).subscribe(
+      ([song, loading]) => {
+        if (!loading && song === null) {
+          this.showNotFoundModal();
+        }
+      }
+    );
+
+    this.songSub = combined$;
   }
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
+    this.songSub.unsubscribe();
+  }
+
+  showNotFoundModal(): void {
+    this.store.dispatch(
+      UiActions.showModal({
+        title: 'Canción No Encontrada',
+        message: 'La canción solicitada no existe o no pudo ser cargada.',
+        closable: false,
+        confirmCallback: () => this.navigateBack(),
+      })
+    );
   }
 
   onDelete(songData: Song): void {
@@ -51,29 +73,26 @@ export class DetailPageComponent implements OnInit, OnDestroy {
   }
 
   deleteSong(id: number): void {
-
     this.store.dispatch(UiActions.startLoading());
 
     this.store.dispatch(SongActions.deleteSong({ id }));
 
-    // Llamar a la función successCallback cuando la canción se haya eliminado y el loader se haya detenido
     const successCallback = () => {
-      this.store.dispatch(UiActions.stopLoading()); // Detener el loader
-      this.showSuccessModal(); // Mostrar el modal de éxito después de la eliminación
+      this.store.dispatch(UiActions.stopLoading());
+      this.showSuccessModal();
     };
 
-    // Esperar un corto período de tiempo antes de llamar a la función successCallback
-    setTimeout(successCallback, 1000); // Ajusta el tiempo según sea necesario
+    setTimeout(successCallback, 1000);
   }
-
 
   showSuccessModal(): void {
     this.store.dispatch(
       UiActions.showModal({
         title: 'Eliminación Completada',
         message: 'La canción ha sido eliminada correctamente.',
+        closable: false,
         confirmCallback: () => {
-          this.navigateBack(); // Navegar hacia atrás solo después de aceptar el modal
+          this.navigateBack();
         },
       })
     );

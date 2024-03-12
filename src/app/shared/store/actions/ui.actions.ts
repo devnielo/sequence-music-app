@@ -7,6 +7,7 @@ export const showModal = createAction(
     title: string;            // Título del modal
     message: string;          // Mensaje del modal
     confirmCallback?: () => void; // Callback opcional para confirmar una acción
+    closable?: boolean
   }>()
 );
 

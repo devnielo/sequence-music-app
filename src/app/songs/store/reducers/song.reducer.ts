@@ -7,6 +7,8 @@ export interface SongState {
   currentSong: Song | null;
   loading: boolean;
   error: any;
+  isDeleted: boolean;
+  lastAddedSongId: number | undefined;
 }
 
 export const initialState: SongState = {
@@ -14,6 +16,8 @@ export const initialState: SongState = {
   currentSong: null,
   loading: false,
   error: null,
+  isDeleted: false,
+  lastAddedSongId: undefined,
 };
 
 export const songReducer = createReducer(
@@ -65,6 +69,7 @@ export const songReducer = createReducer(
   on(SongActions.addSongSuccess, (state, { song }) => ({
     ...state,
     songs: [...state.songs, song],
+    lastAddedSongId: song.id,
     loading: false,
   })),
   on(SongActions.addSongFailure, (state, { error }) => ({
@@ -79,5 +84,10 @@ export const songReducer = createReducer(
   on(SongActions.clearEditSong, (state) => ({
     ...state,
     currentSong: null,
+  })),
+  on(SongActions.deleteSongSuccess, (state, { id }) => ({
+    ...state,
+    isDeleted: true,
+    songs: state.songs.filter((song) => song.id !== id),
   }))
 );

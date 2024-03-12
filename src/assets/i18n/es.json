@@ -43,6 +43,26 @@
   "TITLE_SONGS": "Canciones",
   "TITLE": "Título",
   "YEAR": "Año",
+  "VALIDATOR_TITLE": "El título es obligatorio.",
+  "VALIDATOR_ARTIST": "Se requiere al menos un artista.",
+  "VALIDATOR_GENRE": "Se requiere al menos un género.",
+  "VALIDATOR_YEAR": {
+    "REQUIRED": "El año es obligatorio.",
+    "MIN": "El año no puede ser menor a 0.",
+    "MAX": "El año no puede ser mayor al año actual."
+  },
+  "VALIDATOR_RATING": {
+    "REQUIRED": "La calificación es obligatoria.",
+    "MIN": "La calificación no puede ser menor a 0.",
+    "MAX": "La calificación no puede ser mayor a 10."
+  },
+  "VALIDATOR_DURATION": {
+    "REQUIRED": "La duración es obligatoria.",
+    "MIN": "La duración no puede ser menor a 0.",
+    "MAX": "La duración no puede ser mayor a 1000."
+  },
+  "VALIDATOR_COUNTRY": "El país es obligatorio.",
+  "VALIDATOR_POSTER": "El póster es obligatorio.",
   "COUNTRIES": {
     "Afganistán": "Afganistán",
     "Albania": "Albania",

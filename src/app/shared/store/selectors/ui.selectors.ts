@@ -27,3 +27,8 @@ export const selectConfirmCallback = createSelector(
   selectUIFeature,
   (state: UiState) => state.confirmCallback
 );
+
+export const selectModalClosable = createSelector(
+  selectUIFeature,
+  (state: UiState) => state.closable
+);

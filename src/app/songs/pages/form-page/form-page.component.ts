@@ -4,10 +4,11 @@ import {
   ElementRef,
   OnInit,
   Renderer2,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Observable, map, of, switchMap } from 'rxjs';
+import { Observable, filter, map, of, switchMap, take } from 'rxjs';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -25,21 +26,23 @@ import * as UiActions from '../../../shared/store/actions/ui.actions';
   templateUrl: './form-page.component.html',
 })
 export class FormPageComponent implements OnInit {
-  form!: FormGroup;
   artists$!: Observable<Artist[]>;
-  loading$!: Observable<boolean>;
-  editMode = false;
-  currentSongId: number | null = null;
   availableGenres = environment.ALL_GENRES;
-  selectedGenres: string[] = [];
-  showDropdown = false;
   countries = environment.countries;
+  currentSongId: number | null = null;
   currentYear = new Date().getFullYear();
-  showGenreDropdown: boolean = false;
+  editMode = false;
+  form!: FormGroup;
+  imgUrl: string = '';
+  isDeleteAction = false;
+  loading$!: Observable<boolean>;
   selectedArtists: number[] = [];
-  showArtistDropdown: boolean = false;
   selectedCountry: string | null = null;
-  isDeleteAction = false; // Propiedad para rastrear si es acción de eliminación
+  selectedGenres: string[] = [];
+  showArtistDropdown: boolean = false;
+  showDropdown = false;
+  showGenreDropdown: boolean = false;
+  submitted = false;
 
   @ViewChild('artistDropdown') artistDropdown!: ElementRef<HTMLDivElement>;
   @ViewChild('genreDropdown') genreDropdown!: ElementRef<HTMLDivElement>;
@@ -51,7 +54,8 @@ export class FormPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
   ) {
     this.loading$ = this.store.select(fromSongSelectors.selectSongsLoading);
   }
@@ -61,6 +65,15 @@ export class FormPageComponent implements OnInit {
     this.loadArtists();
     this.checkEditMode();
     this.setupClickOutsideListener();
+    this.imgUrl = this.checkSongImage();
+  }
+
+  checkSongImage(): string {
+    const imgUrl =
+      this.form.value.poster ||
+      `http://dummyimage.com/400x600.png/${this.generateRandomHexColor()}/${this.generateRandomHexColor()}`;
+    console.log(imgUrl);
+    return imgUrl;
   }
 
   private initForm(): void {
@@ -119,6 +132,56 @@ export class FormPageComponent implements OnInit {
       });
   }
 
+  setSelectedGenres(genres: string[]): void {
+    const genreArray = this.form.get('genre') as FormArray;
+    genreArray.clear();
+    genres.forEach((genre) => {
+      genreArray.push(this.fb.control(genre));
+    });
+    this.selectedGenres = [...genres];
+    console.log(this.selectedGenres);
+  }
+
+  setSelectedArtists(artists: number | number[]): void {
+    const artistArray = this.form.get('artist') as FormArray;
+    artistArray.clear();
+    this.selectedArtists = [];
+
+    if (Array.isArray(artists)) {
+      artists.forEach((id) => {
+        artistArray.push(this.fb.control(id));
+        this.selectedArtists.push(id);
+      });
+    } else if (typeof artists === 'number') {
+      artistArray.push(this.fb.control(artists));
+      this.selectedArtists.push(artists);
+    }
+  }
+
+  onSubmit(): void {
+    console.log(this.form.get('artist')?.touched);
+
+    this.submitted = true;
+    if (this.form.valid) {
+      const formData = this.form.value;
+
+      let songData: Song = {
+        ...formData,
+        artist: this.selectedArtists,
+        genre: this.selectedGenres,
+      };
+      if (this.editMode) {
+        this.updateSong(songData);
+      } else {
+        this.addSong(songData);
+      }
+    } else {
+      console.log(this.form.value);
+
+      this.form.markAllAsTouched();
+    }
+  }
+
   private setFormValues(song: Song): void {
     this.form.patchValue({
       title: song.title,
@@ -127,69 +190,16 @@ export class FormPageComponent implements OnInit {
       duration: song.duration,
       country: song.country,
       poster: song.poster,
+      artist: Array.isArray(song.artist)
+        ? song.artist.map((a) => a)
+        : [song.artist],
+      genre: song.genre,
     });
-    this.setSelectedGenres(song.genre);
-    this.setSelectedArtists(song.artist);
-  }
 
-  setSelectedGenres(genres: string[]): void {
-    const genreArray = this.form.get('genre') as FormArray;
-    genreArray.clear();
-    genres.forEach((genre) => {
-      genreArray.push(this.fb.control(genre));
-    });
-    this.selectedGenres = [...genres]; // Actualiza la lista de géneros seleccionados
-    console.log(this.selectedGenres);
-  }
-
-  setSelectedArtists(artists: number | number[]): void {
-    const artistArray = this.form.get('artist') as FormArray;
-    artistArray.clear();
-    this.selectedArtists = []; // Limpia la lista de artistas seleccionados
-
-    if (Array.isArray(artists)) {
-      // Si 'artists' es un arreglo, itera y añade cada id al form array y a la lista de seleccionados
-      artists.forEach((id) => {
-        artistArray.push(this.fb.control(id));
-        this.selectedArtists.push(id);
-      });
-    } else if (typeof artists === 'number') {
-      // Si 'artists' es un número, añade solo ese id
-      artistArray.push(this.fb.control(artists));
-      this.selectedArtists.push(artists);
-    }
-  }
-
-  onSubmit(): void {
-    if (this.form.valid) {
-      let songData: Song;
-
-      if (this.editMode) {
-        songData = {
-          id: this.currentSongId,
-          ...this.form.value,
-          artist: this.getArtistIds(),
-          genre: this.getGenreValues(),
-        };
-        if (this.isDeleteAction) {
-          this.confirmDelete(songData);
-        } else {
-          this.updateSong(songData);
-        }
-      } else {
-        songData = {
-          ...this.form.value,
-          artist: this.getArtistIds(),
-          genre: this.getGenreValues(),
-        };
-
-        this.addSong(songData);
-      }
-
-      console.log(songData);
-    } else {
-      this.form.markAllAsTouched();
-    }
+    this.selectedArtists = Array.isArray(song.artist)
+      ? song.artist
+      : [song.artist];
+    this.selectedGenres = [...song.genre];
   }
 
   onDelete(): void {
@@ -199,12 +209,32 @@ export class FormPageComponent implements OnInit {
 
   addSong(songData: Song): void {
     this.store.dispatch(SongActions.addSong({ song: songData }));
-    this.navigateBack();
+
+    this.store
+      .pipe(
+        select(fromSongSelectors.selectLastAddedSongId),
+        filter((id) => id != null),
+        take(1)
+      )
+      .subscribe((newSongId) => {
+        this.store.dispatch(SongActions.loadingComplete()); // Detiene la carga
+        this.showAddSongSuccessModal(newSongId!);
+      });
+  }
+
+  showAddSongSuccessModal(newSongId: number): void {
+    console.log(newSongId);
+    this.store.dispatch(
+      UiActions.showModal({
+        title: 'Canción Añadida',
+        message: 'La canción ha sido añadida exitosamente.',
+        closable: false,
+        confirmCallback: () => this.router.navigate(['/songs', newSongId]),
+      })
+    );
   }
 
   updateSong(songData: Song): void {
-    console.log(songData);
-
     this.store.dispatch(SongActions.updateSong({ song: songData }));
     this.navigateBack();
   }
@@ -214,17 +244,24 @@ export class FormPageComponent implements OnInit {
       UiActions.showModal({
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar esta canción?',
+        closable: true,
         confirmCallback: () => this.deleteSong(songData.id!),
       })
     );
   }
 
   deleteSong(id: number): void {
-    console.log(id);
-    this.store.dispatch(UiActions.startLoading());
     this.store.dispatch(SongActions.deleteSong({ id }));
-    this.store.dispatch(UiActions.stopLoading());
-    this.showSuccessModal();
+    this.store
+      .pipe(
+        select(fromSongSelectors.isSongDeleted),
+        filter((isDeleted) => isDeleted),
+        take(1)
+      )
+      .subscribe(() => {
+        this.store.dispatch(UiActions.stopLoading());
+        this.showSuccessModal();
+      });
   }
 
   showSuccessModal(): void {
@@ -232,19 +269,13 @@ export class FormPageComponent implements OnInit {
       UiActions.showModal({
         title: 'Eliminación Completada',
         message: 'La canción ha sido eliminada correctamente.',
+        closable: false,
         confirmCallback: () => {
-          this.store.dispatch(UiActions.stopLoading());
+          this.store.dispatch(UiActions.hideModal());
           this.navigateBack();
         },
       })
     );
-  }
-
-  generaTeRandomImage(){
-    const imgUrl = this.form.value.poster ||
-    `http://dummyimage.com/400x600.png/${this.generateRandomHexColor()}/${this.generateRandomHexColor()}`;
-    console.log(imgUrl);
-    return imgUrl;
   }
 
   navigateBack(): void {
@@ -254,16 +285,8 @@ export class FormPageComponent implements OnInit {
 
   /* Styles methods */
 
-  getArtistIds(): number[] {
-    return (this.form.get('artist') as FormArray).value;
-  }
-
-  getGenreValues(): string[] {
-    return (this.form.get('genre') as FormArray).value;
-  }
-
   generateRandomHexColor(): string {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    return Math.floor(Math.random() * 16777215).toString(16);
   }
 
   getArtistName(artistId: number): Observable<string> {
@@ -277,23 +300,6 @@ export class FormPageComponent implements OnInit {
 
   toggleGenreDropdown() {
     this.showGenreDropdown = !this.showGenreDropdown;
-  }
-
-  addSelectedGenre(genre: string) {
-    this.toggleGenreDropdown();
-  }
-
-  removeSelectedGenre(genre: string) {
-    this.selectedGenres = this.selectedGenres.filter((g) => g !== genre);
-  }
-
-  addSelectedArtist(artistId: number) {
-    this.selectedArtists.push(artistId);
-    this.toggleArtistDropdown();
-  }
-
-  removeSelectedArtist(artistId: number) {
-    this.selectedArtists = this.selectedArtists.filter((id) => id !== artistId);
   }
 
   toggleArtistDropdown() {
@@ -341,6 +347,32 @@ export class FormPageComponent implements OnInit {
     this.showDropdown = false;
   }
 
+  removeSelectedArtist(artistId: number): void {
+    this.selectedArtists = this.selectedArtists.filter(id => id !== artistId);
+    this.updateArtistsFormArray();
+  }
+
+  removeSelectedGenre(genre: string): void {
+    this.selectedGenres = this.selectedGenres.filter(g => g !== genre);
+    this.updateGenresFormArray();
+  }
+
+  private updateArtistsFormArray(): void {
+    const artistArray = this.form.get('artist') as FormArray;
+    artistArray.clear();
+    this.selectedArtists.forEach(artistId => {
+      artistArray.push(this.fb.control(artistId));
+    });
+  }
+
+  private updateGenresFormArray(): void {
+    const genreArray = this.form.get('genre') as FormArray;
+    genreArray.clear();
+    this.selectedGenres.forEach(genre => {
+      genreArray.push(this.fb.control(genre));
+    });
+  }
+
   selectArtist(artistId: number) {
     this.selectedArtists.push(artistId);
     this.showArtistDropdown = false;
@@ -349,5 +381,31 @@ export class FormPageComponent implements OnInit {
   selectGenre(genre: string) {
     this.selectedGenres.push(genre);
     this.showGenreDropdown = false;
+  }
+
+  addSelectedArtist(artistId: number) {
+    const artistArray = this.form.get('artist') as FormArray;
+    if (!artistArray.value.includes(artistId)) {
+      artistArray.push(this.fb.control(artistId));
+      this.selectedArtists.push(artistId);
+    }
+  }
+
+  addSelectedGenre(genre: string) {
+    const genreArray = this.form.get('genre') as FormArray;
+    if (!genreArray.value.includes(genre)) {
+      genreArray.push(this.fb.control(genre));
+      this.selectedGenres.push(genre);
+    }
+  }
+
+  getArtistIds(): number[] {
+    return Array.isArray(this.form.value.artist)
+      ? this.form.value.artist
+      : [this.form.value.artist];
+  }
+
+  getGenreValues(): string[] {
+    return this.form.value.genre;
   }
 }

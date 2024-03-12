@@ -27,3 +27,13 @@ export const selectSongsError = createSelector(
   selectSongState,
   (state: SongState) => state.error
 );
+
+export const isSongDeleted = createSelector(
+  selectSongState,
+  (state: SongState) => state.isDeleted
+);
+
+export const selectLastAddedSongId = createSelector(
+  selectSongState,
+  (state: SongState) => state.lastAddedSongId
+);

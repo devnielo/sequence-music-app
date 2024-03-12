@@ -1,31 +1,72 @@
-<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" *ngIf="showModal$ | async">
+<div
+  class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+  *ngIf="showModal$ | async"
+>
   <!-- Contenedor central -->
   <div class="min-h-screen px-4 text-center">
-    <span class="inline-block h-screen align-middle" aria-hidden="true">&#8203;</span>
+    <span class="inline-block h-screen align-middle" aria-hidden="true"
+      >&#8203;</span
+    >
 
     <!-- Modal -->
-    <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+    <div
+      class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
+    >
       <!-- Cabecera del Modal -->
-      <div class="flex justify-between items-center border-b border-gray-300 pb-3">
-        <h3 class="text-lg font-medium leading-6 text-gray-900" *ngIf="modalTitle$ | async as title">{{ title }}</h3>
-        <button class="text-gray-700 hover:text-gray-900" (click)="close()">
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      <div
+        class="flex justify-between items-center border-b border-gray-300 pb-3"
+      >
+        <h3
+          class="text-lg font-medium leading-6 text-gray-900"
+          *ngIf="modalTitle$ | async as title"
+        >
+          {{ title }}
+        </h3>
+        <button
+          class="text-gray-700 hover:text-gray-900"
+          (click)="close()"
+          *ngIf="closable$ | async"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
           </svg>
         </button>
       </div>
 
       <!-- Cuerpo del Modal -->
       <div class="mt-4">
-        <p class="text-sm text-gray-500" *ngIf="modalMessage$ | async as message">{{ message }}</p>
+        <p
+          class="text-sm text-gray-500"
+          *ngIf="modalMessage$ | async as message"
+        >
+          {{ message }}
+        </p>
       </div>
 
       <!-- Pie del Modal -->
       <div class="mt-4 flex justify-end gap-3">
-        <button class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-dark bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" (click)="continue()">
+        <button
+          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full text-dark bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          (click)="continue()"
+        >
           Continuar
         </button>
-        <button class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400" (click)="close()">
+        <button
+          *ngIf="closable$ | async"
+          class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+          (click)="close()"
+        >
           Cerrar
         </button>
       </div>

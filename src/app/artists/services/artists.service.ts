@@ -17,8 +17,6 @@ export class ArtistService {
 
   // Método para obtener un artista específico por su ID
   getArtistById(id: number): Observable<ApiResponse<Artist>> {
-    console.log(id);
-
     return this.apiService.get<Artist>(`artists/${id}`);
   }
 

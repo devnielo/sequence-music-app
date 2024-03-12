@@ -53,22 +53,21 @@ export class SongEffects {
   );
 
   addSong$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SongActions.addSong),
-      tap(() => this.store.dispatch(SongActions.loadingStart())), // Dispara la acción de inicio de carga
-      mergeMap(async (action) => {
-        try {
-          const response = await firstValueFrom(
-            this.songService.addSong(action.song)
-          );
-          const song: any = response;
-          return SongActions.addSongSuccess({ song });
-        } catch (error) {
-          return SongActions.addSongFailure({ error });
-        }
-      })
+  this.actions$.pipe(
+    ofType(SongActions.addSong),
+    tap(() => this.store.dispatch(SongActions.loadingStart())),
+    mergeMap((action) =>
+      this.songService.addSong(action.song).pipe(
+        map((song) => {
+          console.log("Canción añadida:", song);
+          const data: any = song;
+          return SongActions.addSongSuccess({ song: data });
+        }),
+        catchError((error) => of(SongActions.addSongFailure({ error })))
+      )
     )
-  );
+  )
+);
 
   loadArtistsForSongs$ = createEffect(() =>
     this.actions$.pipe(
@@ -107,12 +106,9 @@ export class SongEffects {
   deleteSong$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SongActions.deleteSong),
-      tap(() => this.store.dispatch(SongActions.loadingStart())), // Dispara la acción de inicio de carga
       mergeMap((action) =>
         this.songService.deleteSong(action.id).pipe(
-          map((response) => {
-            return SongActions.deleteSongSuccess({ id: action.id });
-          }),
+          map(() => SongActions.deleteSongSuccess({ id: action.id })),
           catchError((error) => of(SongActions.deleteSongFailure({ error })))
         )
       )
