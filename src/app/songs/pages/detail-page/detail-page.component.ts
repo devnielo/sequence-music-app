@@ -45,14 +45,14 @@ export class DetailPageComponent implements OnInit, OnDestroy {
       UiActions.showModal({
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar esta canción?',
-        confirmCallback: () => this.deleteSong(songData.id),
+        confirmCallback: () => this.deleteSong(songData.id!),
       })
     );
   }
 
   deleteSong(id: number): void {
 
-    this.store.dispatch(UiActions.startLoading()); // Iniciar el loader
+    this.store.dispatch(UiActions.startLoading());
 
     this.store.dispatch(SongActions.deleteSong({ id }));
 

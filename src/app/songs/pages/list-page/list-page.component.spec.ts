@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListPageComponent } from './list-page.component';
+import { ListPageComponent } from './ListPageComponent';
 
 describe('SongListComponent', () => {
   let component: ListPageComponent;

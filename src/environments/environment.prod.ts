@@ -1,19 +1,5 @@
 export const environment = {
   production: true,
-  ADD_NEW_SONG: 'Añadiendo nueva canción',
-  CANCEL: 'Cancelar',
-  TITLE: 'Título',
-  ENTER_SONG_TITLE: 'Indique el título de la canción',
-  ARTIST: 'Artista',
-  GENRE: 'Género',
-  ADD_GENRE: 'Añade un género',
-  RECORD_LABEL: 'Compañía Discográfica',
-  COUNTRY: 'País',
-  YEAR: 'Año',
-  ENTER_YEAR: 'Indique el año',
-  RATING: 'Puntuación',
-  ENTER_RATING: 'Indique la puntuación',
-  SAVE: 'Guardar',
   ALL_GENRES: [
     'Pop',
     'Rock',
@@ -240,7 +226,5 @@ export const environment = {
     'Zambia',
     'Zimbabue',
   ],
-
-  // Configuraciones de ngx-translate
   i18nPrefix: '',
 };

@@ -4,17 +4,18 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { firstValueFrom, of } from 'rxjs';
 import * as SongActions from '../actions/song.actions';
 import { SongService } from '../../services/songs.service';
-import { Song } from '../../interfaces/song.interface';
-import { ApiResponse } from 'src/app/core/models/api-response.model';
 import { Store } from '@ngrx/store';
 import { SongState } from '../reducers/song.reducer';
+import { ArtistService } from 'src/app/artists/services/artists.service';
+import * as ArtistActions from '../../../artists/store/actions/artist.actions';
 
 @Injectable()
 export class SongEffects {
   constructor(
     private actions$: Actions,
     private songService: SongService,
-    private store: Store<SongState> // Inyecta el store
+    private store: Store<SongState>,
+    private artistService: ArtistService
   ) {}
 
   loadSongs$ = createEffect(() =>
@@ -69,6 +70,20 @@ export class SongEffects {
     )
   );
 
+  loadArtistsForSongs$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SongActions.loadSongsSuccess),
+      mergeMap((action) => {
+        const artistIds = [
+          ...new Set(action.songs.flatMap((song) => song.artist)),
+        ];
+        console.log(artistIds);
+
+        return artistIds.map((id) => ArtistActions.loadArtist({ id }));
+      })
+    )
+  );
+
   updateSong$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SongActions.updateSong),
@@ -79,6 +94,8 @@ export class SongEffects {
             this.songService.updateSong(action.song)
           );
           const song: any = response;
+          console.log(response);
+
           return SongActions.updateSongSuccess({ song });
         } catch (error) {
           return SongActions.updateSongFailure({ error });
@@ -94,7 +111,6 @@ export class SongEffects {
       mergeMap((action) =>
         this.songService.deleteSong(action.id).pipe(
           map((response) => {
-            const song: any = response;
             return SongActions.deleteSongSuccess({ id: action.id });
           }),
           catchError((error) => of(SongActions.deleteSongFailure({ error })))

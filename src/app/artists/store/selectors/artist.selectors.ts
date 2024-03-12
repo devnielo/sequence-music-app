@@ -3,6 +3,7 @@ import { ArtistState } from '../reducers/artist.reducers';
 
 // Selector para obtener el feature state de los artistas
 export const selectArtistFeature = createFeatureSelector<ArtistState>('artists');
+export const selectArtistState = createFeatureSelector<ArtistState>('artists');
 
 // Selector para obtener todos los artistas
 export const selectAllArtists = createSelector(
@@ -27,4 +28,10 @@ export const selectArtistsError = createSelector(
   selectArtistFeature,
   (state: ArtistState) => state.error
 );
+
+export const selectArtistById = (artistId: number) => createSelector(
+  selectAllArtists,
+  (artists) => artists.find(artist => artist.id === artistId)
+);
+
 

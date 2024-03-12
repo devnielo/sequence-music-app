@@ -1,7 +1,7 @@
-<div class="min-h-screen p-5 relative">
+<div>
   <!-- Encabezado y buscador -->
   <div class="flex justify-between items-center mb-6">
-    <h3 class="text-headline text-dark font-bold">
+    <h3 class="text-headline font-bold mb-4 md:mb-0">
       {{ "TITLE_SONGS" | translate }}
     </h3>
 
@@ -26,23 +26,23 @@
 
     <!-- Botón para añadir canción (solo visible en móviles y tabletas) -->
     <button
-      class="bg-primary p-4 text-dark rounded-full fixed bottom-5 right-5 shadow-md hover:bg-primary-dark transition duration-300 md:hidden z-10"
+      class="fixed right-5 bottom-5 bg-primary p-3 rounded-full text-dark shadow-md hover:bg-primary-dark transition duration-300 md:hidden z-10"
       [routerLink]="['/songs/add']"
       translate
       aria-label="ADD_BUTTON"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
+        stroke-width="1.5"
         stroke="currentColor"
+        class="w-6 h-6"
       >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          d="M12 4.5v15m7.5-7.5h-15"
         />
       </svg>
     </button>
@@ -52,15 +52,18 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <ng-container *ngIf="songs$ | async as songs">
       <ng-container *ngIf="songs.length > 0; else noMatches">
-        <div *ngFor="let song of songs" (click)="navigateToDetails(song.id)">
+        <div *ngFor="let song of songs" (click)="navigateToDetails(song.id!)">
           <!-- Tarjeta con imagen de fondo -->
           <div
             class="relative rounded-lg shadow-md overflow-hidden h-56 cursor-pointer"
           >
-            <!-- Título de la canción (siempre visible) -->
+            <!-- Título de la canción y artistas -->
             <div class="absolute top-0 left-0 p-4 z-10">
               <h3 class="text-white font-bold text-lg break-words">
                 {{ song.title }}
+                <span *ngIf="artistNamesBySongId[song.id!]">
+                  ({{ artistNamesBySongId[song.id!] }})
+                </span>
               </h3>
             </div>
             <!-- Imagen de fondo -->
@@ -81,10 +84,19 @@
                 </span>
               </div>
               <!-- Información adicional -->
-              <div class="hidden lg:flex justify-between items-center mt-4">
-                <span class="text-info text-white">{{ song.year }}</span>
-                <span class="text-info text-white">{{ song.duration }}s</span>
-                <shared-rating [rating]="song.rating"></shared-rating>
+              <div
+                class="hidden lg:flex justify-between items-center mt-4 w-full"
+              >
+                <!-- Contenedor que divide el espacio en 3 partes iguales y centra los elementos -->
+                <div class="w-full lg:w-1/3 flex justify-start">
+                  <span class="text-info text-white">{{ song.year }}</span>
+                </div>
+                <div class="w-full lg:w-1/3 flex justify-center">
+                  <span class="text-info text-white">{{ song.duration }}s</span>
+                </div>
+                <div class="w-full lg:w-1/3 flex justify-end">
+                  <shared-rating [rating]="song.rating"></shared-rating>
+                </div>
               </div>
             </div>
           </div>
@@ -92,7 +104,7 @@
       </ng-container>
     </ng-container>
     <ng-template #noMatches>
-      <div class="text-center">
+      <div>
         <p>{{ "NO_MATCHES_FOUND" | translate }}</p>
       </div>
     </ng-template>

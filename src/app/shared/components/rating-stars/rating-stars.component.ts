@@ -23,8 +23,6 @@ export class RatingComponent implements OnInit {
   starsArray: string[] = [];
 
   ngOnInit() {
-    console.log(this.rating);
-
     this.generateStars();
   }
 

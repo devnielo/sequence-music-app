@@ -27,12 +27,12 @@ import * as UiActions from '../../../shared/store/actions/ui.actions';
 export class FormPageComponent implements OnInit {
   form!: FormGroup;
   artists$!: Observable<Artist[]>;
+  loading$!: Observable<boolean>;
   editMode = false;
   currentSongId: number | null = null;
   availableGenres = environment.ALL_GENRES;
   selectedGenres: string[] = [];
   showDropdown = false;
-  loading$!: Observable<boolean>;
   countries = environment.countries;
   currentYear = new Date().getFullYear();
   showGenreDropdown: boolean = false;
@@ -140,7 +140,6 @@ export class FormPageComponent implements OnInit {
     });
     this.selectedGenres = [...genres]; // Actualiza la lista de géneros seleccionados
     console.log(this.selectedGenres);
-
   }
 
   setSelectedArtists(artists: number | number[]): void {
@@ -161,28 +160,33 @@ export class FormPageComponent implements OnInit {
     }
   }
 
-
   onSubmit(): void {
     if (this.form.valid) {
-      const songData: Song = {
-        ...this.form.value,
-        artist: this.getArtistIds(),
-        genre: this.getGenreValues(),
-      };
+      let songData: Song;
 
-      if (this.editMode && this.isDeleteAction) {
-        // Si está en modo edición y es una acción de eliminación
-        this.confirmDelete(songData);
-      } else {
-        // No es una eliminación, procede con la lógica habitual
-        // Resetear el indicador de acción de eliminación
-        this.isDeleteAction = false;
-        if (this.editMode) {
-          this.updateSong(songData);
+      if (this.editMode) {
+        songData = {
+          id: this.currentSongId,
+          ...this.form.value,
+          artist: this.getArtistIds(),
+          genre: this.getGenreValues(),
+        };
+        if (this.isDeleteAction) {
+          this.confirmDelete(songData);
         } else {
-          this.addSong(songData);
+          this.updateSong(songData);
         }
+      } else {
+        songData = {
+          ...this.form.value,
+          artist: this.getArtistIds(),
+          genre: this.getGenreValues(),
+        };
+
+        this.addSong(songData);
       }
+
+      console.log(songData);
     } else {
       this.form.markAllAsTouched();
     }
@@ -199,6 +203,8 @@ export class FormPageComponent implements OnInit {
   }
 
   updateSong(songData: Song): void {
+    console.log(songData);
+
     this.store.dispatch(SongActions.updateSong({ song: songData }));
     this.navigateBack();
   }
@@ -208,31 +214,37 @@ export class FormPageComponent implements OnInit {
       UiActions.showModal({
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar esta canción?',
-        confirmCallback: () => this.deleteSong(songData.id),
+        confirmCallback: () => this.deleteSong(songData.id!),
       })
     );
   }
 
   deleteSong(id: number): void {
     console.log(id);
-    this.store.dispatch(UiActions.startLoading()); // Suponiendo que tienes una acción para iniciar el loader
+    this.store.dispatch(UiActions.startLoading());
     this.store.dispatch(SongActions.deleteSong({ id }));
-    this.store.dispatch(UiActions.stopLoading()); // Suponiendo que tienes una acción para detener el loader
+    this.store.dispatch(UiActions.stopLoading());
     this.showSuccessModal();
   }
 
-  // Método para mostrar un modal de éxito después de eliminar
   showSuccessModal(): void {
     this.store.dispatch(
       UiActions.showModal({
         title: 'Eliminación Completada',
         message: 'La canción ha sido eliminada correctamente.',
         confirmCallback: () => {
-          this.store.dispatch(UiActions.stopLoading()); // Detener el loader antes de mostrar el modal
-          this.navigateBack(); // Navegar hacia atrás solo después de aceptar el modal
+          this.store.dispatch(UiActions.stopLoading());
+          this.navigateBack();
         },
       })
     );
+  }
+
+  generaTeRandomImage(){
+    const imgUrl = this.form.value.poster ||
+    `http://dummyimage.com/400x600.png/${this.generateRandomHexColor()}/${this.generateRandomHexColor()}`;
+    console.log(imgUrl);
+    return imgUrl;
   }
 
   navigateBack(): void {
