@@ -1,95 +1,39 @@
 <div class="flex flex-col h-full bg-dark shadow-creative p-2">
   <!-- Título y botón de cerrar -->
-  <div class="flex items-center justify-between p-4 border-b border-dark-200">
+  <div class="flex items-center justify-between p-4">
     <h3 class="text-xl text-white font-bold">Menu</h3>
     <button class="text-gray-400 hover:text-white" (click)="closeSidebar()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
 
   <!-- Navegación -->
   <nav class="flex-grow mt-4">
-    <ul class="space-y-2">
+    <ul class="divide-y divide-dark-200">
       <!-- Links de navegación -->
       <li>
-        <a
-          routerLink="/songs"
-          routerLinkActive="bg-primary text-dark"
-          class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]"
-        >
+        <a routerLink="/songs" routerLinkActive="font-bold text-primary" class="flex justify-between text-white items-center py-3 px-4 rounded-xl bg-dark hover:bg-[#292929]">
           Canciones
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
       </li>
       <li>
-        <a
-          routerLink="/artists"
-          routerLinkActive="bg-primary text-dark"
-          class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]"
-        >
+        <a routerLink="/artists" routerLinkActive="font-bold text-primary" class="flex justify-between text-white items-center py-3 px-4 rounded-xl bg-dark hover:bg-[#292929]">
           Artistas
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
       </li>
       <li>
-        <a
-          routerLink="/companies"
-          routerLinkActive="bg-primary text-dark"
-          class="flex justify-between text-white items-center p-4 rounded-xl bg-dark hover:bg-[#292929]"
-        >
+        <a routerLink="/companies" routerLinkActive="font-bold text-primary" class="flex justify-between text-white items-center py-3 px-4 rounded-xl bg-dark hover:bg-[#292929]">
           Compañías
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
       </li>

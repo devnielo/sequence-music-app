@@ -1,33 +1,37 @@
 <shared-loader *ngIf="loading$ | async"></shared-loader>
-<div class="bg-background">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="text-headline font-bold mb-4 md:mb-0" translate>
+<div class="bg-background my-2">
+  <!-- Título y botón de cancelar (solo visible en ordenadores) -->
+  <div class="flex justify-between items-center hidden lg:flex">
+    <h3 class="text-headline font-bold mb-4" translate>
       {{ editMode ? "EDITING_SONG" : "ADD_NEW_SONG" }}
     </h3>
     <button
-      class="hidden md:flex bg-primary py-2 px-4 rounded hover:bg-primary-dark transition duration-300 shadow-md"
+      class="bg-primary py-2 px-4 rounded hover:bg-primary-dark transition duration-300 shadow-md"
       (click)="navigateBack()"
+      translate
     >
-      {{ "CANCEL" | translate }}
+      CANCEL
     </button>
   </div>
 
   <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Sección de la imagen -->
     <div class="lg:flex-shrink-0 lg:w-1/3">
       <img
         *ngIf="form.get('poster')?.value"
         [src]="form.get('poster')?.value"
         alt="Song Image"
-        class="w-full h-full object-cover rounded-r"
+        class="w-full h-auto object-cover rounded lg:rounded-r"
       />
       <img
         *ngIf="!form.get('poster')?.value"
         [src]="imgUrl"
         alt="Song Image"
-        class="w-full h-full object-cover rounded-r"
+        class="w-full h-auto object-cover rounded lg:rounded-r"
       />
     </div>
 
+    <!-- Formulario -->
     <form class="flex-1 space-y-4" [formGroup]="form" (ngSubmit)="onSubmit()">
       <!-- Título -->
       <div class="mb-4">
@@ -44,7 +48,10 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_SONG_TITLE' | translate }}"
         />
-        <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('title')?.invalid && form.get('title')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           {{ "VALIDATOR_TITLE" | translate }}
         </div>
       </div>
@@ -60,6 +67,7 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 cursor-pointer"
           placeholder="Seleccionar artista(s)"
           (click)="toggleArtistDropdown()"
+          (blur)="onArtistDropdownBlur()"
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -77,6 +85,15 @@
           />
         </svg>
         <div
+          *ngIf="
+            form.get('artist')?.invalid &&
+            (form.get('artist')?.touched || submitted)
+          "
+          class="text-red-600 text-sm mt-1"
+        >
+          {{ "VALIDATOR_ARTIST" | translate }}
+        </div>
+        <div
           *ngIf="showArtistDropdown"
           class="absolute mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg z-10"
         >
@@ -90,25 +107,21 @@
                 {{ artist.name }}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 ml-2"
                   fill="none"
                   viewBox="0 0 24 24"
+                  stroke-width="1.5"
                   stroke="currentColor"
+                  class="w-6 h-6"
                 >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                   />
                 </svg>
               </div>
             </ng-container>
           </div>
-        </div>
-        <div *ngIf="submitted && form.get('artist')?.invalid && form.get('artist')?.touched"
-        class="text-red-600 text-sm mt-1">
-        {{ "VALIDATOR_ARTIST" | translate }}
         </div>
       </div>
 
@@ -154,7 +167,17 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 cursor-pointer"
           placeholder="Seleccionar género"
           (click)="toggleGenreDropdown()"
+          (blur)="onGenreDropdownBlur()"
         />
+        <div
+          *ngIf="
+            form.get('genre')?.invalid &&
+            (form.get('genre')?.touched || submitted)
+          "
+          class="text-red-600 text-sm mt-1"
+        >
+          {{ "VALIDATOR_GENRE" | translate }}
+        </div>
         <div
           *ngIf="showGenreDropdown"
           class="absolute mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg z-10"
@@ -169,24 +192,21 @@
                 {{ genre }}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 ml-2"
                   fill="none"
                   viewBox="0 0 24 24"
+                  stroke-width="1.5"
                   stroke="currentColor"
+                  class="w-6 h-6"
                 >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                   />
                 </svg>
               </div>
             </ng-container>
           </div>
-        </div>
-        <div *ngIf="submitted && form.get('genre')?.invalid && form.get('genre')?.touched"
-        class="text-red-600 text-sm mt-1">          {{ "VALIDATOR_GENRE" | translate }}
         </div>
       </div>
 
@@ -229,7 +249,7 @@
           class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 cursor-pointer relative"
           (click)="toggleDropdown('country')"
         >
-          <div class="pl-3 pr-10 py-2 rounded-md bg-white  text-gray-700">
+          <div class="pl-3 pr-10 py-2 rounded-md bg-white text-gray-700">
             {{ selectedCountry || ("SELECT_COUNTRY" | translate) }}
           </div>
           <div
@@ -255,7 +275,10 @@
             >
           </div>
         </div>
-        <div *ngIf="form.get('country')?.invalid && form.get('country')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('country')?.invalid && form.get('country')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           {{ "VALIDATOR_COUNTRY" | translate }}
         </div>
       </div>
@@ -275,7 +298,10 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_YEAR' | translate }}"
         />
-        <div *ngIf="form.get('year')?.invalid && form.get('year')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('year')?.invalid && form.get('year')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           <ng-container *ngIf="form.get('year')?.errors?.['required']">
             {{ "VALIDATOR_YEAR.REQUIRED" | translate }}
           </ng-container>
@@ -303,7 +329,10 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_RATING' | translate }}"
         />
-        <div *ngIf="form.get('rating')?.invalid && form.get('rating')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('rating')?.invalid && form.get('rating')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           <ng-container *ngIf="form.get('rating')?.errors?.['required']">
             {{ "VALIDATOR_RATING.REQUIRED" | translate }}
           </ng-container>
@@ -331,7 +360,10 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ADD_DURATION' | translate }}"
         />
-        <div *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('duration')?.invalid && form.get('duration')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           <ng-container *ngIf="form.get('duration')?.errors?.['required']">
             {{ "VALIDATOR_DURATION.REQUIRED" | translate }}
           </ng-container>
@@ -342,7 +374,6 @@
             {{ "VALIDATOR_DURATION.MAX" | translate }}
           </ng-container>
         </div>
-
       </div>
 
       <!-- Campo de URL de imagen -->
@@ -360,47 +391,47 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           placeholder="{{ 'ENTER_IMAGE_URL' | translate }}"
         />
-        <div *ngIf="form.get('poster')?.invalid && form.get('poster')?.touched" class="text-red-600 text-sm mt-1">
+        <div
+          *ngIf="form.get('poster')?.invalid && form.get('poster')?.touched"
+          class="text-red-600 text-sm mt-1"
+        >
           {{ "VALIDATOR_POSTER" | translate }}
         </div>
       </div>
 
-      <!-- Botón de envío -->
-      <div class="flex justify-end">
+      <div class="hidden lg:flex justify-end">
         <button
           type="submit"
           class="bg-primary text-dark py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
         >
-          {{
-            editMode ? ("UPDATE_SONG" | translate) : ("ADD_SONG" | translate)
-          }}
+          {{ (editMode ? 'UPDATE_SONG' : 'ADD_SONG') | translate }}
+        </button>
+      </div>
+
+      <!-- Botones flotantes para dispositivos móviles y tabletas -->
+      <div class="lg:hidden fixed bottom-4 right-4 flex space-x-2 z-10">
+        <!-- Botón para guardar (icono de verificación) -->
+        <button
+          type="submit"
+          class="bg-primary text-dark p-3 rounded-full shadow-lg hover:bg-primary-dark transition duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
         </button>
       </div>
     </form>
-    <div
-      class="fixed bottom-5 left-5 flex flex-row items-end space-y-2 md:hidden"
-    >
-      <button
-        class="bg-primary text-dark p-3 rounded-full shadow-lg hover:bg-danger-dark transition duration-300 z-10"
-        (click)="navigateBack()"
-      >
-        <!-- Ícono de eliminar, ajusta según tus íconos disponibles -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
-      </button>
-    </div>
   </div>
 </div>
 

@@ -1,15 +1,18 @@
-<div class="bg-background" >
-  <div class="flex items-center justify-between mb-8">
-    <h3 class="text-headline font-bold mb-4 md:mb-0">
-      {{ "TITLE" | translate }}
+<shared-loader *ngIf="loading$ | async"></shared-loader>
+<div class="bg-background my-2">
+  <div class="hidden lg:flex justify-between items-center mb-8">
+    <h3
+      class="text-headline font-bold mb-4 md:mb-0"
+      *ngIf="song$ | async as song"
+    >
+      {{ song.title }}
     </h3>
     <button
       class="hidden md:flex bg-primary py-2 px-4 rounded hover:bg-primary-dark transition duration-300 shadow-md"
       (click)="navigateBack()"
       translate
-      aria-label="BACK_BUTTON"
     >
-      {{ "BACK_BUTTON" | translate }}
+      BACK_BUTTON
     </button>
   </div>
 
@@ -24,10 +27,12 @@
           class="object-cover w-full h-48 lg:h-auto rounded-t-lg lg:rounded-none lg:rounded-l-lg"
         />
       </div>
-      <div class="p-6 lg:w-1/2 space-y-4">
+      <div class="p-6 lg:w-3/4 space-y-4">
         <h3 class="text-2xl lg:text-3xl font-bold mb-2">{{ song.title }}</h3>
         <div class="flex items-center text-lg">
-          <span class="text-sm md:text-base text-gray-600 mr-3">{{ "RATING" | translate }}:</span>
+          <span class="text-sm md:text-base text-gray-600 mr-3"
+            >{{ "RATING" | translate }}:</span
+          >
           <shared-rating [rating]="song.rating"></shared-rating>
         </div>
         <p class="text-sm md:text-base text-gray-600 mb-2">
@@ -36,60 +41,41 @@
         </p>
         <p class="text-sm md:text-base text-gray-600 mb-2">
           {{ "DURATION" | translate }}:
-          <span
-            >{{ song.duration }} {{ "SECONDS" | translate }}</span
-          >
+          <span>{{ song.duration }} {{ "SECONDS" | translate }}</span>
         </p>
-        <p class="text-sm md:text-base text-gray-600 mb-2">
-          <span>{{ "GENRES" | translate }} </span>
-          <span class="space-x-1">
-            <ng-container *ngFor="let genre of song.genre; let isLast = last">
-              <span>{{ genre }}</span
-              ><span *ngIf="!isLast">,</span>
+        <div class="flex">
+          <p class="text-sm md:text-base text-gray-600">
+            <span>{{ "GENRES" | translate }} </span>
+          </p>
+
+          <div class="flex flex-wrap align-middle justify-center gap-2 ml-2">
+            <ng-container *ngFor="let genre of song.genre">
+              <span
+                class="bg-primary px-2 py-1 text-dark rounded-full text-xs"
+              >
+                {{ genre }}
+              </span>
             </ng-container>
-          </span>
-        </p>
+          </div>
+        </div>
+
         <!-- Botones estándar para escritorio -->
         <div class="hidden md:flex gap-3">
-          <button
-            class="bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300"
-            (click)="navigateToEdit(song.id!)"
-          >
-            {{ "EDIT_BUTTON" | translate }}
-          </button>
           <button
             class="bg-danger text-dark py-2 px-4 rounded-full hover:bg-danger-dark transition duration-300 border border-danger-dark"
             (click)="onDelete(song)"
           >
             {{ "DELETE_BUTTON" | translate }}
           </button>
+          <button
+            class="bg-primary text-dark py-2 px-4 rounded-full hover:bg-primary-dark transition duration-300"
+            (click)="navigateToEdit(song.id!)"
+          >
+            {{ "EDIT_BUTTON" | translate }}
+          </button>
         </div>
 
         <!-- Botones flotantes para móviles y tabletas -->
-        <div
-          class="fixed bottom-5 left-5 flex flex-row items-end space-y-2 md:hidden"
-        >
-          <button
-            class="bg-primary text-dark p-3 rounded-full shadow-lg hover:bg-primary-dark transition duration-300 z-10"
-            (click)="navigateBack()"
-          >
-            <!-- Ícono de eliminar, ajusta según tus íconos disponibles -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
-            </svg>
-          </button>
-        </div>
         <div
           class="fixed bottom-5 right-5 flex flex-row items-end space-y-2 md:hidden"
         >

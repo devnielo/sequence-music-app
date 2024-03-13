@@ -16,12 +16,10 @@ export enum ArtistActionTypes {
   UPDATE_ARTIST_FAILURE = '[Artist] Update Artist Failure',
   DELETE_ARTIST = '[Artist] Delete Artist',
   DELETE_ARTIST_SUCCESS = '[Artist] Delete Artist Success',
-  DELETE_ARTIST_FAILURE = '[Artist] Delete Artist Failure'
+  DELETE_ARTIST_FAILURE = '[Artist] Delete Artist Failure',
 }
 
-export const loadArtists = createAction(
-  ArtistActionTypes.LOAD_ARTISTS
-);
+export const loadArtists = createAction(ArtistActionTypes.LOAD_ARTISTS);
 
 export const loadArtistsSuccess = createAction(
   ArtistActionTypes.LOAD_ARTISTS_SUCCESS,

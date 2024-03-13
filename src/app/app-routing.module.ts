@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { Error404Page } from './shared/error404-page/error404-page.component';
+import { Error404PageComponent } from './shared/error404-page/error404-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/songs', pathMatch: 'full' },
@@ -19,10 +19,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./artists/artists.module').then((m) => m.ArtistsModule),
   },
-  {
-    path: '**',
-    redirectTo: 'songs',
-  },
+  { path: '**', redirectTo: '/songs' },
 ];
 
 @NgModule({

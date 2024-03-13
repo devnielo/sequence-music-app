@@ -27,7 +27,6 @@ export class SongService {
 
   // Método para actualizar una canción existente
   updateSong(song: Song): Observable<ApiResponse<Song>> {
-    console.log(song.id);
     if (!song.id) {
 
       throw new Error('Song ID is required for update');

@@ -1,11 +1,11 @@
 <div>
   <!-- Encabezado y buscador -->
-  <div class="flex justify-between items-center mb-6">
+  <div class="flex justify-between items-center mb-2">
     <h3 class="text-headline font-bold mb-4 md:mb-0">
       {{ "TITLE_SONGS" | translate }}
     </h3>
 
-    <div class="hidden md:flex items-center gap-8">
+    <div class="flex items-center gap-8">
       <!-- Campo de búsqueda -->
       <input
         type="text"
@@ -49,7 +49,7 @@
   </div>
 
   <!-- Lista de tarjetas -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:mt-8">
     <ng-container *ngIf="songs$ | async as songs">
       <ng-container *ngIf="songs.length > 0; else noMatches">
         <div *ngFor="let song of songs" (click)="navigateToDetails(song.id!)">
@@ -84,17 +84,15 @@
                 </span>
               </div>
               <!-- Información adicional -->
-              <div
-                class="hidden lg:flex justify-between items-center mt-4 w-full"
-              >
+              <div class="flex justify-between items-center mt-4 w-full">
                 <!-- Contenedor que divide el espacio en 3 partes iguales y centra los elementos -->
-                <div class="w-full lg:w-1/3 flex justify-start">
+                <div class="flex justify-start">
                   <span class="text-info text-white">{{ song.year }}</span>
                 </div>
-                <div class="w-full lg:w-1/3 flex justify-center">
+                <div class="flex justify-center">
                   <span class="text-info text-white">{{ song.duration }}s</span>
                 </div>
-                <div class="w-full lg:w-1/3 flex justify-end">
+                <div class="flex justify-end">
                   <shared-rating [rating]="song.rating"></shared-rating>
                 </div>
               </div>

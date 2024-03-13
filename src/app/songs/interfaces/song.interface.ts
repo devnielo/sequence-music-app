@@ -9,3 +9,7 @@ export interface Song {
   rating: number;
   artist: number | number[];
 }
+
+export interface SongWithArtists extends Song {
+  artistNames: string;
+}
