@@ -5,12 +5,12 @@ import { selectSongsLoading } from 'src/app/songs/store/selectors/song.selectors
 import { LanguageService } from '../services/language.service';
 import { RouteService } from '../services/route.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layout-page',
   templateUrl: './layout-page.component.html',
   styleUrls: ['./layout-page.component.css'],
-
 })
 export class LayoutPageComponent implements OnDestroy {
   showSidebar: boolean = false;
@@ -25,7 +25,8 @@ export class LayoutPageComponent implements OnDestroy {
     private cdr: ChangeDetectorRef,
     private languageService: LanguageService,
     public routeService: RouteService,
-    private ngZone: NgZone // Inject NgZone
+    private ngZone: NgZone,
+    private translate: TranslateService
   ) {
     this.store.pipe(select(selectSongsLoading)).subscribe((loading) => {
       // Wrapping the property update in setTimeout to prevent NG0100 error
@@ -48,15 +49,17 @@ export class LayoutPageComponent implements OnDestroy {
     });
 
     // Suscribirse a isMainRoute y almacenar su valor actual
-    this.isMainRouteSubscription = this.routeService.isMainPageRoute$.subscribe((isMainRoute) => {
-      // Wrapping the property update in setTimeout to prevent NG0100 error
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          this.isMainRoute = isMainRoute;
-          this.cdr.detectChanges();
+    this.isMainRouteSubscription = this.routeService.isMainPageRoute$.subscribe(
+      (isMainRoute) => {
+        // Wrapping the property update in setTimeout to prevent NG0100 error
+        this.ngZone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.isMainRoute = isMainRoute;
+            this.cdr.detectChanges();
+          });
         });
-      });
-    });
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -70,6 +73,11 @@ export class LayoutPageComponent implements OnDestroy {
 
   changeLanguage(language: string): void {
     this.languageService.setLanguage(language);
+    this.setLanguage(language);
+  }
+
+  setLanguage(language: string): void {
+    this.translate.use(language);
   }
 
   toggleSidebar(): void {

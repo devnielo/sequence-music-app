@@ -30,6 +30,7 @@ export const loadingStart = createAction(SongActionTypes.LOADING_START);
 // Acción para completar la carga
 export const loadingComplete = createAction(SongActionTypes.LOADING_COMPLETE);
 
+export const loadingStop = createAction('[UI] Loading Stop');
 
 // Acciones para cargar todas las canciones
 export const loadSongs = createAction(SongActionTypes.LOAD_SONGS);

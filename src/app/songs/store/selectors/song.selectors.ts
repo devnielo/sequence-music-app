@@ -40,3 +40,15 @@ export const selectLastAddedSongId = createSelector(
   selectSongState,
   (state: SongState) => state.lastAddedSongId
 );
+
+export const selectSongUpdateSuccess = createSelector(
+  selectSongState,
+  (state: SongState) => state.loading
+);
+
+export const selectSongUpdateFinished = createSelector(
+  selectSongState,
+  (state: SongState) => {
+    return !state.loading;
+  }
+);

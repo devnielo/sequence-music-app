@@ -153,20 +153,13 @@ export class SongEffects {
     this.actions$.pipe(
       ofType(SongActions.updateSong),
       tap(() => {
-        console.log('Efecto updateSong iniciado');
         this.store.dispatch(SongActions.loadingStart());
       }),
       mergeMap(async (action) => {
-        console.log('Iniciando proceso de actualización', action);
 
         try {
           const response = await this.songService.updateSong(action.song);
-          console.log('Respuesta recibida del servicio', response.subscribe( result => {
-            console.log();
-          }));
           const song: any = response;
-          console.log('Canción actualizada', song);
-
           return SongActions.updateSongSuccess({ song });
         } catch (error) {
           console.error('Error en la actualización de la canción', error);

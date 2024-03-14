@@ -250,9 +250,22 @@ export class FormPageComponent implements OnInit {
 
   updateSong(songData: Song): void {
     this.store.dispatch(SongActions.updateSong({ song: songData }));
+
+    this.store.pipe(
+      select(fromSongSelectors.selectSongUpdateSuccess),
+      filter(isUpdated => isUpdated),
+      take(1)
+    ).subscribe(() => {
+      // Mostrar modal de confirmación
+      this.loading$ = this.store.select(fromSongSelectors.selectSongsLoading);
+      this.showUpdateSongSuccessModal();
+    });
+  }
+
+  showUpdateSongSuccessModal(): void {
     this.store.dispatch(
       UiActions.showModal({
-        title: 'Actualización confirmada',
+        title: 'Actualización Exitosa',
         message: 'La canción ha sido actualizada correctamente.',
         closable: true,
         confirmCallback: () => {

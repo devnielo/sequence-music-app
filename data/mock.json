@@ -1,45 +1,117 @@
 {
   "songs": [
     {
-      "id": 3,
+      "title": "Who did you think i was",
+      "artist": [
+        1
+      ],
+      "genre": [
+        "Pop",
+        "Rock",
+        "Alternative"
+      ],
+      "year": 2007,
+      "rating": 9.27,
+      "duration": 424,
+      "country": "Antigua y Barbuda",
+      "poster": "https://i.pinimg.com/originals/54/cc/51/54cc51295a03f77462a64e0fc1b299cd.jpg",
+      "id": 1
+    },
+    {
+      "title": "Penny Lane",
+      "artist": [
+        2
+      ],
+      "genre": [
+        "Rock",
+        "Pop",
+        "Chill"
+      ],
+      "year": 1967,
+      "rating": 8.99,
+      "duration": 303,
+      "country": "Alemania",
+      "poster": "https://lafonoteca.net/wp-content/uploads/2011/02/tonks2.jpg",
+      "id": 2
+    },
+    {
       "title": "Hey Jude",
-      "poster": "http://dummyimage.com/400x600.png/5fa2dd/ffffff",
+      "artist": [
+        2
+      ],
       "genre": [
         "Pop",
         "Rock",
         "Alternative"
       ],
       "year": 1974,
+      "rating": 10,
       "duration": 206,
-      "rating": 6.25,
-      "artist": 2
+      "country": "Argentina",
+      "poster": "https://i.discogs.com/kVy7A4PjlloafNJDN6t3Ud9EjlGsFwIQQl_XJXRsBcI/rs:fit/g:sm/q:90/h:597/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTQ3Njk1/MS0xNjg1Mjg1MTk0/LTcyNjcuanBlZw.jpeg",
+      "id": 3
     },
     {
-      "id": 4,
       "title": "(I Can't Get No) Satisfaction",
-      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "artist": [
+        4
+      ],
       "genre": [
         "Rock",
         "Pop",
         "Heavy"
       ],
       "year": 1965,
-      "duration": 290,
       "rating": 6.66,
-      "artist": 4
+      "duration": 290,
+      "country": "Angola",
+      "poster": "https://images.pulsewebcontent.com/photos/2020/01_Jan/800/StonesEARLY800_1_20.jpg",
+      "id": 4
     },
     {
-      "id": 6,
+      "id": 5,
+      "title": "Where the Streets Have No Name",
+      "poster": "http://dummyimage.com/400x600.png/ff4444/ffffff",
+      "genre": [
+        "Rock",
+        "Pop",
+        "Heavy"
+      ],
+      "year": 1982,
+      "duration": 217,
+      "rating": 8.36,
+      "artist": 5
+    },
+    {
       "title": "Who Says",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "artist": [
+        1
+      ],
       "genre": [
         "Pop",
         "Romance"
       ],
       "year": 1995,
-      "duration": 340,
       "rating": 7.99,
-      "artist": 1
+      "duration": 340,
+      "country": "Albania",
+      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "id": 6
+    },
+    {
+      "id": 7,
+      "title": "With or without you",
+      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "genre": [
+        "Rock",
+        "Pop",
+        "Alternative",
+        "Blues"
+      ],
+      "year": 1972,
+      "duration": 305,
+      "rating": 6.77,
+      "artist": 5
     },
     {
       "id": 8,
@@ -84,29 +156,21 @@
       "artist": 7
     },
     {
-      "id": 11,
       "title": "Hey Joe",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "artist": [
+        7
+      ],
       "genre": [
         "Blues",
         "Psychedelic rock",
         "Rock"
       ],
       "year": 1962,
-      "duration": 502,
       "rating": 8.39,
-      "artist": 7
-    },
-    {
-      "title": "Por la raja de tu falda",
-      "artist": [],
-      "genre": [],
-      "year": 2000,
-      "rating": 10,
-      "duration": 200,
-      "country": "Albania",
-      "poster": "https://www.cadenadial.com/wp-content/uploads/2020/04/GettyImages-1174302151-e1632129227811.jpg",
-      "id": 12
+      "duration": 502,
+      "country": "Andorra",
+      "poster": "https://i1.sndcdn.com/artworks-000088042446-ka80cp-t500x500.jpg",
+      "id": 11
     }
   ],
   "artists": [
