@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { SongState } from 'src/app/songs/store/reducers/song.reducer';
 import { selectSongsLoading } from 'src/app/songs/store/selectors/song.selectors';
@@ -24,20 +24,38 @@ export class LayoutPageComponent implements OnDestroy {
     private store: Store<SongState>,
     private cdr: ChangeDetectorRef,
     private languageService: LanguageService,
-    public routeService: RouteService
+    public routeService: RouteService,
+    private ngZone: NgZone // Inject NgZone
   ) {
     this.store.pipe(select(selectSongsLoading)).subscribe((loading) => {
-      this.isLoading = loading;
-      this.cdr.detectChanges();
+      // Wrapping the property update in setTimeout to prevent NG0100 error
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.isLoading = loading;
+          this.cdr.detectChanges();
+        });
+      });
     });
 
     this.routeService.pageTitle$.subscribe((title) => {
-      this.pageTitle = title;
+      // Wrapping the property update in setTimeout to prevent NG0100 error
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.pageTitle = title;
+          this.cdr.detectChanges();
+        });
+      });
     });
 
     // Suscribirse a isMainRoute y almacenar su valor actual
     this.isMainRouteSubscription = this.routeService.isMainPageRoute$.subscribe((isMainRoute) => {
-      this.isMainRoute = isMainRoute;
+      // Wrapping the property update in setTimeout to prevent NG0100 error
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.isMainRoute = isMainRoute;
+          this.cdr.detectChanges();
+        });
+      });
     });
   }
 

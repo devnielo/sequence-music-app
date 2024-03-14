@@ -124,29 +124,33 @@ export class FormPageComponent implements OnInit {
   }
 
   private checkEditMode(): void {
-    this.route.paramMap.pipe(
-      switchMap((params) => {
-        const id = params.get('id');
-        if (id) {
-          this.editMode = true;
-          this.currentSongId = +id;
-          this.store.dispatch(SongActions.loadSong({ id: +id }));
-          return this.store.pipe(select(fromSongSelectors.selectCurrentSong, { id: +id }));
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const id = params.get('id');
+          if (id) {
+            this.editMode = true;
+            this.currentSongId = +id;
+            this.store.dispatch(SongActions.loadSong({ id: +id }));
+            return this.store.pipe(
+              select(fromSongSelectors.selectCurrentSong, { id: +id })
+            );
+          }
+          return of(null);
+        }),
+        filter((song) => song !== null) // Asegúrate de que la canción no sea null
+      )
+      .subscribe((song) => {
+        if (song) {
+          this.setFormValues(song);
         }
-        return of(null);
-      }),
-      filter(song => song !== null)  // Asegúrate de que la canción no sea null
-    ).subscribe((song) => {
-      if (song) {
-        this.setFormValues(song);
-      }
-    });
+      });
   }
 
   setSelectedGenres(genres: string[]): void {
     const genreArray = this.form.get('genre') as FormArray;
     genreArray.clear();
-    genres.forEach(genre => {
+    genres.forEach((genre) => {
       genreArray.push(this.fb.control(genre));
     });
     this.selectedGenres = genres;
@@ -158,7 +162,7 @@ export class FormPageComponent implements OnInit {
     this.selectedArtists = [];
 
     const artistIds = Array.isArray(artists) ? artists : [artists];
-    artistIds.forEach(artistId => {
+    artistIds.forEach((artistId) => {
       artistArray.push(this.fb.control(artistId));
       this.selectedArtists.push(artistId);
     });
@@ -174,7 +178,9 @@ export class FormPageComponent implements OnInit {
         artist: this.selectedArtists,
         genre: this.selectedGenres,
       };
-      if (this.editMode) {
+
+      if (this.editMode && this.currentSongId) {
+        songData = { ...songData, id: this.currentSongId };
         this.updateSong(songData);
       } else {
         this.addSong(songData);
@@ -185,33 +191,31 @@ export class FormPageComponent implements OnInit {
   }
 
   private setFormValues(song: Song): void {
-    console.log('Cargando canción para editar:', song);
-
     this.form.patchValue({
       title: song.title,
       year: song.year,
       rating: song.rating,
       duration: song.duration,
       country: song.country,
-      poster: song.poster
+      poster: song.poster,
     });
 
     this.selectedGenres = [...song.genre];
     const genreArray = this.form.get('genre') as FormArray;
     genreArray.clear();
-    this.selectedGenres.forEach(genre => {
+    this.selectedGenres.forEach((genre) => {
       genreArray.push(this.fb.control(genre));
     });
 
-    this.selectedArtists = Array.isArray(song.artist) ? song.artist : [song.artist];
+    this.selectedArtists = Array.isArray(song.artist)
+      ? song.artist
+      : [song.artist];
     const artistArray = this.form.get('artist') as FormArray;
     artistArray.clear();
-    this.selectedArtists.forEach(artistId => {
+    this.selectedArtists.forEach((artistId) => {
       artistArray.push(this.fb.control(artistId));
     });
   }
-
-
 
   onDelete(): void {
     this.isDeleteAction = true;
@@ -246,7 +250,17 @@ export class FormPageComponent implements OnInit {
 
   updateSong(songData: Song): void {
     this.store.dispatch(SongActions.updateSong({ song: songData }));
-    this.navigateBack();
+    this.store.dispatch(
+      UiActions.showModal({
+        title: 'Actualización confirmada',
+        message: 'La canción ha sido actualizada correctamente.',
+        closable: true,
+        confirmCallback: () => {
+          this.store.dispatch(UiActions.hideModal());
+          this.navigateBack();
+        },
+      })
+    );
   }
 
   confirmDelete(songData: Song): void {

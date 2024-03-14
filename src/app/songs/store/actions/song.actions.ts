@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Song } from '../../interfaces/song.interface';
+import { Artist } from 'src/app/artists/interfaces/artist.interface';
 
 export enum SongActionTypes {
   LOAD_SONGS = '[Songs] Load Songs',
@@ -114,3 +115,19 @@ export const editSong = createAction(
 );
 
 export const clearEditSong = createAction(SongActionTypes.CLEAR_EDIT_SONG);
+
+
+export const loadArtistDetails = createAction(
+  '[Song] Load Artist Details',
+  props<{ artistId: number }>()
+);
+
+export const loadArtistDetailsSuccess = createAction(
+  '[Song] Load Artist Details Success',
+  props<{ artistId: number, artistDetails: Artist }>()
+);
+
+export const loadArtistDetailsFailure = createAction(
+  '[Song] Load Artist Details Failure',
+  props<{ error: any }>()
+);

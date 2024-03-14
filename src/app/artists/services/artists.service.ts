@@ -16,8 +16,8 @@ export class ArtistService {
   }
 
   // Método para obtener un artista específico por su ID
-  getArtistById(id: number): Observable<ApiResponse<Artist>> {
-    return this.apiService.get<Artist>(`artists/${id}`);
+  getArtistById(id: number): Observable<any> {
+    return this.apiService.get<any>(`artists/${id}`);
   }
 
   // Método para añadir un nuevo artista

@@ -1,63 +1,79 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
-import { Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as SongActions from '../../store/actions/song.actions';
-import * as ArtistActions from '../../../artists/store/actions/artist.actions';
-import * as fromArtistSelectors from '../../../artists/store/selectors/artist.selectors';
-import { Song } from '../../interfaces/song.interface';
-import { SongService } from '../../services/songs.service';
-import { ArtistService } from 'src/app/artists/services/artists.service';
-import { selectAllArtists } from '../../../artists/store/selectors/artist.selectors';
-import { Artist } from 'src/app/artists/interfaces/artist.interface';
 import * as fromSongSelectors from '../../store/selectors/song.selectors';
+import { Song } from '../../interfaces/song.interface';
+import { FormControl } from '@angular/forms';
+import { Artist } from 'src/app/artists/interfaces/artist.interface';
+import { ApiService } from 'src/app/core/services/api.service';
 
 @Component({
   selector: 'song-list-page',
   templateUrl: './list-page.component.html',
 })
 export class ListPageComponent implements OnInit {
-getArtists() {
-throw new Error('Method not implemented.');
-}
   songs$: Observable<Song[]>;
-  songsWithArtistNames$!: Observable<Song[]>;
   loading$: Observable<boolean>;
   searchControl = new FormControl('');
-  artistNamesBySongId: { [songId: number]: string } = {};
-  allDataLoaded$!: Observable<boolean>;
+  artistNames: { [key: number]: string } = {};
 
   constructor(
     private store: Store,
     private router: Router,
-    private songService: SongService
+    private apiService: ApiService
   ) {
-    this.songs$ = this.store.select(fromSongSelectors.selectAllSongs);
-    this.loading$ = this.store.select(fromSongSelectors.selectSongsLoading);
+    this.songs$ = this.store.pipe(select(fromSongSelectors.selectAllSongs));
+    this.loading$ = this.store.pipe(
+      select(fromSongSelectors.selectSongsLoading)
+    );
   }
 
   ngOnInit(): void {
     this.store.dispatch(SongActions.loadSongs());
-    //this.store.dispatch(SongActions.loadSongsWithArtists());
+    this.songs$.subscribe((songs) => {
+      songs.forEach((song) => {
+        this.loadArtistNames(song.artist);
+      });
+    });
   }
 
-  private handleSearchQuery(query: string | null): Observable<Song[]> {
-    if (query && query.length >= 1) {
-      return this.songService.searchSongs(query);
+  loadSongs(): void {
+    this.store.dispatch(SongActions.loadSongs());
+  }
+
+  private loadArtistNames(artistIds: number | number[]): void {
+    if (Array.isArray(artistIds)) {
+      artistIds.forEach((artistId) => this.loadArtistName(artistId));
     } else {
-      return this.songs$;
+      this.loadArtistName(artistIds);
     }
   }
 
+  private loadArtistName(artistId: number): void {
+    this.getArtistNameById(artistId).subscribe((name) => {
+      this.artistNames[artistId] = name;
+    });
+  }
+
+  getArtistNames(artistIds: number | number[]): string {
+    if (Array.isArray(artistIds)) {
+      return artistIds
+        .map((id) => this.artistNames[id])
+        .filter((name) => !!name)
+        .join(', ');
+    } else {
+      return this.artistNames[artistIds] || '';
+    }
+  }
+
+  private getArtistNameById(artistId: number): Observable<string> {
+    return this.apiService.get<Artist>(`artists/${artistId}`).pipe(
+      map((response: any) => response.name),
+      catchError(() => of('Unknown Artist'))
+    );
+  }
   navigateToDetails(songId: number): void {
     this.router.navigate(['/songs', songId]);
   }

@@ -33,34 +33,22 @@ export const songReducer = createReducer(
   on(SongActions.loadSongs, (state) => ({
     ...state,
     loading: true,
-    error: null,
   })),
-  on(SongActions.loadSongsSuccess, (state, { songs }) => ({
-    ...state,
-    loading: false,
-    songs,
-    error: null,
-  })),
+  on(SongActions.loadSongsSuccess, (state, { songs }) => {
+    return { ...state, songs, loading: false };
+  }),
   on(SongActions.loadSongsFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,
   })),
-  on(SongActions.loadSong, (state) => ({
+  on(SongActions.loadingStart, (state) => ({
     ...state,
     loading: true,
-    error: null,
   })),
-  on(SongActions.loadSongSuccess, (state, { song }) => ({
-    ...state,
-    currentSong: song,
-    loading: false,
-    error: null,
-  })),
-  on(SongActions.loadSongFailure, (state, { error }) => ({
+  on(SongActions.loadingComplete, (state) => ({
     ...state,
     loading: false,
-    error,
   })),
   on(SongActions.addSong, (state) => ({
     ...state,
@@ -89,5 +77,16 @@ export const songReducer = createReducer(
     ...state,
     isDeleted: true,
     songs: state.songs.filter((song) => song.id !== id),
+  })),
+  on(SongActions.loadSongSuccess, (state, { song }) => ({
+    ...state,
+    currentSong: song,
+    loading: false,
+    error: null,
+  })),
+  on(SongActions.loadSongFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );

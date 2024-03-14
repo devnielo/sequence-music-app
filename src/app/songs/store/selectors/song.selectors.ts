@@ -1,15 +1,18 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SongState } from '../reducers/song.reducer';
-
+import * as fromSongs from './song.selectors';
+import * as fromCompanies from '../../../companies/store/selectors/company.selectors';
+import * as fromArtists from '../../../artists/store/selectors/artist.selectors';
 // Selecciona el estado de las canciones
 export const selectSongState = createFeatureSelector<SongState>('songs');
 
 // Selecciona todas las canciones
 export const selectAllSongs = createSelector(
   selectSongState,
-  (state: SongState) => state.songs
+  (state: SongState) => {
+    return state.songs;
+  }
 );
-
 // Selecciona el estado de carga de las canciones
 export const selectSongsLoading = createSelector(
   selectSongState,
